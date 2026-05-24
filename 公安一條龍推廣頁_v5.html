@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>公安一條龍</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --o800:#B85500;--o700:#D4700A;--o500:#F0960E;
+  --o200:#FFD89A;--o100:#FFF0D0;--o50:#FFFAF2;
+  --gold:#FFD166;
+  --ink:#1A0F00;--ink2:#3D2B10;--ink3:#7A5F3A;
+  --surf:#FFFFFF;--surf2:#FAFAF8;--surf3:#F2EDE5;
+  --gr:#2E7D32;--gr-bg:#E8F5E9;
+  --teal-bg:#E0F5F0;
+  --red:#C0392B;--red-bg:#FEECEC;
+  --r:14px;--r2:22px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--surf2);color:var(--ink);padding:0 0 3rem;max-width:800px}
+
+/* Hero */
+.hero{position:relative;background:var(--o800);border-radius:var(--r2);margin:1.5rem 1rem 0;padding:2.5rem 2rem 2rem;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 110% 50%,rgba(255,209,102,.18) 0%,transparent 70%),repeating-linear-gradient(-45deg,transparent 0px,transparent 18px,rgba(255,255,255,.025) 18px,rgba(255,255,255,.025) 19px)}
+.hero-kicker{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:1.2rem}
+.hero-kicker::before{content:'';display:block;width:18px;height:2px;background:var(--gold);border-radius:2px}
+.hero h1{font-size:clamp(22px,5vw,32px);font-weight:900;color:#fff;line-height:1.25;margin-bottom:.6rem;position:relative;letter-spacing:-.5px}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--gold),#FFB830);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:13.5px;color:rgba(255,255,255,.72);line-height:1.7;margin-bottom:2rem;position:relative}
+.bonus-row{display:flex;gap:10px;flex-wrap:wrap;position:relative}
+.bcard{flex:1;min-width:140px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);padding:.9rem 1rem}
+.bcard-label{font-size:11px;color:rgba(255,255,255,.65);margin-bottom:4px;font-weight:500}
+.bcard-amt{font-size:22px;font-weight:900;color:var(--gold);letter-spacing:-.5px;line-height:1}
+.bcard-unit{font-size:12px;color:rgba(255,255,255,.6);margin-top:3px}
+.hero-cta-row{display:flex;gap:10px;margin-top:1.5rem;flex-wrap:wrap;position:relative}
+.btn-primary{display:inline-flex;align-items:center;gap:7px;background:var(--gold);color:#6B3000;font-size:14px;font-weight:800;padding:.7rem 1.5rem;border-radius:999px;border:none;cursor:pointer;font-family:inherit;transition:.2s;white-space:nowrap}
+.btn-primary:hover{background:#fff;transform:translateY(-1px)}
+.btn-ghost{display:inline-flex;align-items:center;background:transparent;color:rgba(255,255,255,.8);font-size:13px;font-weight:500;padding:.7rem 1.25rem;border-radius:999px;border:1px solid rgba(255,255,255,.28);cursor:pointer;font-family:inherit;transition:.2s;white-space:nowrap}
+.btn-ghost:hover{background:rgba(255,255,255,.1)}
+
+/* Sections */
+.sec{padding:2rem 1rem 0}
+.sec-head{display:flex;align-items:flex-end;gap:10px;margin-bottom:1.25rem}
+.sec-num{font-size:52px;font-weight:900;line-height:1;color:var(--o200);letter-spacing:-3px}
+.sec-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--o700);margin-bottom:2px}
+.sec-title{font-size:17px;font-weight:700;color:var(--ink)}
+.sec-sub{font-size:12px;color:var(--ink3);margin-top:2px;line-height:1.5}
+
+/* Stats */
+.stat-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat-card{background:var(--surf);border-radius:var(--r2);border:1.5px solid #EDE5D8;padding:1.25rem 1.25rem 1rem;position:relative;overflow:hidden}
+.stat-card::after{content:'';position:absolute;top:-30px;right:-30px;width:80px;height:80px;border-radius:50%;background:var(--o100);opacity:.6}
+.stat-num{font-size:38px;font-weight:900;color:var(--o700);letter-spacing:-2px;line-height:1;margin-bottom:4px}
+.stat-label{font-size:12px;font-weight:500;color:var(--ink3);line-height:1.4}
+.stat-badge{display:inline-block;font-size:10px;font-weight:700;background:var(--o100);color:var(--o800);padding:2px 7px;border-radius:999px;margin-top:6px}
+
+/* Step cards */
+.scard{background:var(--surf);border-radius:var(--r2);border:1.5px solid #EDE5D8;overflow:hidden;margin-bottom:10px;transition:border-color .2s}
+.scard.active{border-color:var(--o500)}
+.scard-head{display:flex;align-items:center;gap:14px;padding:1.1rem 1.25rem;cursor:pointer;user-select:none}
+.scard-step{width:32px;height:32px;border-radius:50%;background:var(--o100);color:var(--o800);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.2s}
+.scard.done .scard-step{background:var(--gr);color:#fff}
+.scard-htxt{flex:1}
+.scard-htxt .ht{font-size:15px;font-weight:700;color:var(--ink)}
+.scard-htxt .hs{font-size:12px;color:var(--ink3);margin-top:2px}
+.scard-chev{color:var(--o200);font-size:20px;transition:transform .25s;line-height:1}
+.scard-chev.open{transform:rotate(180deg)}
+.scard-body{padding:0 1.25rem 1.25rem}
+.scard-body.hide{display:none}
+.scard.locked{opacity:.5;pointer-events:none}
+
+/* Choice buttons */
+.choices{display:flex;flex-direction:column;gap:7px;margin-top:2px}
+.chbtn{display:flex;align-items:flex-start;gap:12px;border:1.5px solid #EDE5D8;border-radius:var(--r);padding:.85rem 1rem;background:var(--surf2);text-align:left;width:100%;font-family:inherit;cursor:pointer;transition:.15s}
+.chbtn:hover{border-color:var(--o500);background:var(--o50)}
+.chbtn.sel{border-color:var(--o700);background:var(--o50)}
+.chbtn .ci{font-size:22px;flex-shrink:0;margin-top:-1px}
+.chbtn .ct .t1{font-size:14px;font-weight:700;color:var(--ink);line-height:1.4}
+.chbtn .ct .t2{font-size:12px;color:var(--ink3);margin-top:3px;line-height:1.5}
+
+/* Result boxes */
+@keyframes fadeSlide{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.rbox{margin-top:12px;padding:1.1rem 1.15rem;border-radius:var(--r);font-size:13px;line-height:1.75;border-left:4px solid var(--o500);background:var(--o50);animation:fadeSlide .25s ease}
+.rbox .rtit{font-size:14px;font-weight:800;margin-bottom:.5rem;color:var(--o800)}
+.rbox.green{border-left-color:var(--gr);background:var(--gr-bg)}
+.rbox.green .rtit{color:var(--gr)}
+.rbox.warn{border-left-color:#C86800;background:#FFF8EE}
+.rbox.warn .rtit{color:#7A4000}
+.chip{display:inline-flex;align-items:center;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;margin:0 4px 5px 0}
+.chip-o{background:var(--o100);color:var(--o800)}
+.chip-g{background:var(--gr-bg);color:var(--gr)}
+.chip-r{background:var(--red-bg);color:var(--red)}
+.act-btn{display:inline-flex;align-items:center;gap:6px;background:var(--o700);color:#fff;border:none;padding:.6rem 1.3rem;border-radius:999px;font-size:13.5px;font-weight:700;cursor:pointer;margin-top:.85rem;font-family:inherit;transition:.15s;text-decoration:none;margin-right:6px}
+.act-btn:hover{background:var(--o800)}
+.act-btn.ghost{background:transparent;color:var(--o700);border:1.5px solid var(--o700)}
+.act-btn.ghost:hover{background:var(--o50)}
+
+/* Downloads */
+.dl-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:500px){.dl-grid{grid-template-columns:1fr}}
+.dl-card{background:var(--surf);border-radius:var(--r2);border:1.5px solid #EDE5D8;padding:1.1rem 1.2rem}
+.dl-head{display:flex;align-items:center;gap:9px;margin-bottom:.9rem;padding-bottom:.9rem;border-bottom:1px solid #EDE5D8}
+.dl-icon-wrap{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ico-o{background:var(--o100)}
+.ico-t{background:var(--teal-bg)}
+.dl-dept{font-size:14px;font-weight:700;color:var(--ink)}
+.dl-item{display:flex;align-items:center;gap:8px;padding:.48rem 0;border-bottom:1px solid #F0EBE2;text-decoration:none;cursor:pointer}
+.dl-item:last-child{border-bottom:none;padding-bottom:0}
+.dl-dot{width:6px;height:6px;border-radius:50%;background:var(--o500);flex-shrink:0;margin-top:1px}
+.dl-txt{font-size:12px;color:var(--ink2);flex:1;line-height:1.4}
+.dl-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px;background:var(--o100);color:var(--o800);flex-shrink:0}
+
+/* Contact */
+.ct-list{display:flex;flex-direction:column;gap:8px}
+.ct-card{background:var(--surf);border-radius:var(--r2);border:1.5px solid #EDE5D8;padding:1rem 1.25rem;display:flex;align-items:flex-start;gap:14px}
+.ct-ico{width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;margin-top:2px}
+.ct-ico.o{background:var(--o100)}
+.ct-ico.t{background:var(--teal-bg)}
+.ct-dept{font-size:14px;font-weight:800;color:var(--ink)}
+.ct-scope{font-size:12px;color:var(--ink3);margin:3px 0 7px;line-height:1.5}
+.ct-orgs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.ct-org-tag{font-size:11px;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--o100);color:var(--o800)}
+.ct-phone{font-size:13px;font-weight:700;color:var(--o800);display:flex;align-items:center;gap:5px}
+
+/* Footer notice */
+.pg-notice{margin:2rem 1rem 0;background:var(--surf);border:1.5px solid #EDE5D8;border-radius:var(--r2);padding:1rem 1.25rem;display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--ink3);line-height:1.6}
+.pg-notice strong{color:var(--ink);font-weight:700}
+
+/* Fade-in animation */
+.fadein{opacity:0;transform:translateY(12px);animation:fadeSlide .4s ease forwards}
+.fadein:nth-child(2){animation-delay:.08s}
+.fadein:nth-child(3){animation-delay:.16s}
+.fadein:nth-child(4){animation-delay:.24s}
+
+/* ── 內嵌表單 ── */
+.form-wrap{margin-top:14px;border-radius:var(--r2);overflow:hidden;border:1.5px solid var(--o200);animation:fadeSlide .3s ease}
+.fi-hero{background:var(--o800);padding:1.5rem 1.5rem 2.5rem;text-align:center;position:relative;overflow:hidden}
+.fi-hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent 0,transparent 18px,rgba(255,255,255,.03) 18px,rgba(255,255,255,.03) 19px)}
+.fi-hero h3{font-size:18px;font-weight:800;color:#fff;margin-bottom:.4rem;position:relative}
+.fi-hero p{font-size:12px;color:rgba(255,255,255,.75);line-height:1.6;position:relative}
+.fi-inner{background:var(--surf);padding:1.25rem}
+.fi-prog{margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid #EDE5D8}
+.fi-srow{display:flex;justify-content:space-between;margin-bottom:.6rem}
+.fi-sl{font-size:11px;color:var(--ink3);flex:1;text-align:center;transition:color .3s;font-weight:500}
+.fi-sl.active{color:var(--o700);font-weight:800}
+.fi-sl.done{color:var(--o500)}
+.fi-track{height:4px;background:#EDE5D8;border-radius:4px;overflow:hidden}
+.fi-fill{height:100%;background:var(--o700);border-radius:4px;transition:width .4s;width:25%}
+.fi-pg{display:none}
+.fi-pg.on{display:block}
+.fi-qtitle{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:3px;line-height:1.4}
+.fi-qhint{font-size:12px;color:var(--ink3);margin-bottom:.75rem;line-height:1.5}
+.fi-req{color:var(--red)}
+.fi-qblock{margin-bottom:1.1rem}
+.fi-opts{display:flex;flex-direction:column;gap:.4rem}
+.fi-opt{display:flex;align-items:flex-start;gap:.7rem;padding:.75rem .9rem;border:1.5px solid #EDE5D8;border-radius:var(--r);cursor:pointer;background:var(--surf2);text-align:left;width:100%;font-family:inherit;transition:.15s}
+.fi-opt:hover{border-color:var(--o500);background:var(--o50)}
+.fi-opt.sel{border-color:var(--o700);background:var(--o50)}
+.fi-dot{width:16px;height:16px;border:2px solid #CCC;border-radius:50%;flex-shrink:0;margin-top:2px;position:relative;transition:.15s}
+.fi-opt.sel .fi-dot{background:var(--o700);border-color:var(--o700)}
+.fi-dot::after{content:'';display:none;width:5px;height:5px;background:#fff;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+.fi-opt.sel .fi-dot::after{display:block}
+.fi-om{font-size:13.5px;font-weight:600;line-height:1.4;color:var(--ink)}
+.fi-od{font-size:12px;color:var(--ink3);margin-top:2px;line-height:1.4}
+.fi-tag{display:inline-block;font-size:10px;font-weight:700;padding:1px 6px;border-radius:50px;margin-left:5px;vertical-align:middle}
+.fi-tg{background:var(--o100);color:var(--o800)}
+.fi-ta{background:#FFF3E0;color:#7A5000;border:1px solid #F0C060}
+.fi-fg{margin-bottom:.9rem}
+.fi-fl{display:block;font-size:12.5px;font-weight:700;color:var(--ink2);margin-bottom:.3rem}
+.fi-fhint{font-weight:400;color:var(--ink3);font-size:11px;margin-left:.15rem}
+.fi-inner input,.fi-inner select,.fi-inner textarea{width:100%;padding:.55rem .8rem;border:1.5px solid #DDD;border-radius:var(--r);font-family:inherit;font-size:13.5px;color:var(--ink);background:var(--surf2);transition:border-color .15s;appearance:none}
+.fi-inner input:focus,.fi-inner select:focus,.fi-inner textarea:focus{outline:none;border-color:var(--o700);box-shadow:0 0 0 3px rgba(212,112,10,.1)}
+.fi-inner textarea{height:70px;resize:none}
+.fi-inner select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .8rem center;padding-right:2.2rem}
+.fi-two{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+@media(max-width:400px){.fi-two{grid-template-columns:1fr}}
+.fi-cgrid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-top:.4rem}
+.fi-copt{display:flex;align-items:center;gap:.4rem;padding:.55rem .8rem;border:1.5px solid #DDD;border-radius:var(--r);cursor:pointer;font-size:12.5px;transition:.15s;user-select:none}
+.fi-copt:hover{border-color:var(--o500);background:var(--o50)}
+.fi-copt.chk{border-color:var(--o700);background:var(--o50)}
+.fi-copt input{accent-color:var(--o700);width:14px;height:14px;flex-shrink:0}
+.fi-hl{background:var(--o50);border:1px solid var(--o100);border-radius:var(--r);padding:.75rem .9rem;font-size:12.5px;color:var(--o800);line-height:1.6;margin-top:.7rem}
+.fi-hl strong{font-weight:700}
+.fi-hl.hide{display:none}
+.fi-err{font-size:11.5px;color:var(--red);margin-top:.25rem;display:none}
+.fi-err.on{display:block}
+.fi-nav{display:flex;gap:.6rem;padding-top:1rem;margin-top:1rem;border-top:1px solid #EDE5D8}
+.fi-bbk{padding:0 1.1rem;height:44px;border:1.5px solid #DDD;border-radius:var(--r);font-family:inherit;font-size:13.5px;color:var(--ink3);cursor:pointer;background:var(--surf2);font-weight:500}
+.fi-bbk:hover{background:var(--surf3)}
+.fi-bnx{flex:1;height:44px;border:none;border-radius:var(--r);font-family:inherit;font-size:14px;font-weight:800;color:#fff;cursor:pointer;background:var(--o700);display:flex;align-items:center;justify-content:center;gap:.4rem;transition:.15s}
+.fi-bnx:hover{background:var(--o800)}
+.fi-bnx:disabled{background:#CCC;cursor:not-allowed}
+@keyframes sp{to{transform:rotate(360deg)}}
+.fi-spin{width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;display:none}
+.fi-bnx.ld .fi-spin{display:block}
+.fi-bnx.ld .fi-bl{display:none}
+.fi-succ{text-align:center;padding:2rem 1.25rem 2.5rem}
+.fi-sico{width:60px;height:60px;background:var(--o100);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:26px}
+.fi-stit{font-size:20px;font-weight:800;margin-bottom:.4rem}
+.fi-ssub{font-size:13px;color:var(--ink3);line-height:1.7;margin-bottom:1.25rem}
+.fi-smry{background:var(--surf3);border-radius:var(--r);padding:.85rem 1rem;text-align:left;margin-bottom:1rem}
+.fi-sr{display:flex;justify-content:space-between;padding:.3rem 0;font-size:12.5px;border-bottom:1px solid #E0D8CE}
+.fi-sr:last-child{border-bottom:none}
+.fi-sk{color:var(--ink3);flex-shrink:0;margin-right:.6rem}
+.fi-sv{font-weight:700;text-align:right}
+.fi-disc{font-size:11px;color:var(--ink3);line-height:1.6}
+.fi-notice{background:var(--o50);border-top:1px solid var(--o100);padding:.6rem 1.25rem;font-size:11.5px;color:var(--o800);text-align:center;line-height:1.6}
+.fi-errbanner{display:none;margin:.75rem 0 0;padding:.6rem .9rem;background:#FEECEC;border:1px solid #F5C6CB;border-radius:10px;font-size:12.5px;color:#C0392B;text-align:center}
+</style>
+</head>
+<body>
+
+<div class="hero fadein">
+  <div class="hero-kicker">臺北市建築管理工程處 · 公安申報一條龍服務</div>
+  <h1>成立管委會<br><em>× 公安申報</em><br>政府全程陪你走</h1>
+  <p class="hero-sub">台北市政府免費輔導 · 專人主動聯繫<br>從管委會成立到公安申報，一路陪伴您</p>
+  <div class="bonus-row">
+    <div class="bcard"><div class="bcard-label">成立管委會補助</div><div class="bcard-amt">8<sup style="font-size:14px;vertical-align:super">萬</sup></div><div class="bcard-unit">6–7 樓補助 6 萬元</div></div>
+    <div class="bcard"><div class="bcard-label">公安修繕補助</div><div class="bcard-amt">138<sup style="font-size:14px;vertical-align:super">萬</sup></div><div class="bcard-unit">補助比例高達 80%</div></div>
+  </div>
+  <div class="hero-cta-row">
+    <button class="btn-primary" onclick="document.getElementById('guide').scrollIntoView({behavior:'smooth'})">↓ 了解我的社區怎麼申請</button>
+    <button class="btn-ghost" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">直接諮詢</button>
+  </div>
+</div>
+
+<div class="sec fadein" style="padding-top:1.75rem">
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-num">80<sup style="font-size:18px">%</sup></div><div class="stat-label">公安修繕補助<br>費用補助比例</div><div class="stat-badge">最高 138 萬元</div></div>
+    <div class="stat-card"><div class="stat-num">3<sup style="font-size:16px">步</sup></div><div class="stat-label">線上填寫即可<br>完成初步報名</div><div class="stat-badge">免費 · 免出門</div></div>
+  </div>
+</div>
+
+<div class="sec fadein" id="guide">
+  <div class="sec-head">
+    <div class="sec-num">01</div>
+    <div><div class="sec-label">互動導引</div><div class="sec-title">找到你的申請路線</div><div class="sec-sub">點選社區狀況，立即知道能拿哪些補助</div></div>
+  </div>
+  <div class="scard active" id="card1">
+    <div class="scard-head" onclick="toggleS(1)">
+      <div class="scard-step" id="snum1">1</div>
+      <div class="scard-htxt"><div class="ht">你們社區的管委會現況？</div><div class="hs">這決定你的補助資格與辦理路線</div></div>
+      <span class="scard-chev open" id="schev1">&#9662;</span>
+    </div>
+    <div class="scard-body" id="sbody1">
+      <div class="choices">
+        <button class="chbtn" onclick="s1('yes',this)"><span class="ci">&#127970;</span><div class="ct"><div class="t1">已成立管委會，並完成報備</div><div class="t2">已向主管機關備案，有正式管理組織</div></div></button>
+        <button class="chbtn" onclick="s1('no',this)"><span class="ci">&#127968;</span><div class="ct"><div class="t1">尚未成立 / 不願成立管委會</div><div class="t2">社區尚無正式管理組織，或不打算成立</div></div></button>
+      </div>
+      <div id="s1r"></div>
+    </div>
+  </div>
+  <div class="scard locked" id="card2">
+    <div class="scard-head" onclick="toggleS(2)">
+      <div class="scard-step" id="snum2">2</div>
+      <div class="scard-htxt"><div class="ht" id="s2t">客製化服務方案</div><div class="hs" id="s2s">請先完成步驟一</div></div>
+      <span class="scard-chev" id="schev2">&#9662;</span>
+    </div>
+    <div class="scard-body hide" id="sbody2"></div>
+  </div>
+  <div class="scard locked" id="card3">
+    <div class="scard-head" onclick="toggleS(3)">
+      <div class="scard-step" id="snum3">3</div>
+      <div class="scard-htxt"><div class="ht">公安申報 &times; 補助確認</div><div class="hs">請先完成步驟二</div></div>
+      <span class="scard-chev" id="schev3">&#9662;</span>
+    </div>
+    <div class="scard-body hide" id="sbody3"></div>
+  </div>
+</div>
+
+<div class="sec fadein" id="downloads">
+  <div class="sec-head">
+    <div class="sec-num">02</div>
+    <div><div class="sec-label">資料下載</div><div class="sec-title">表格與資源專區</div><div class="sec-sub">各科室申請表格與說明文件</div></div>
+  </div>
+  <div class="dl-grid">
+    <div class="dl-card">
+      <div class="dl-head"><div class="dl-icon-wrap ico-o">&#127968;</div><div class="dl-dept">公寓科</div></div>
+      <a class="dl-item" href="#"><div class="dl-dot"></div><span class="dl-txt">管委會成立報備申請表</span><span class="dl-badge">DOC</span></a>
+      <a class="dl-item" href="#"><div class="dl-dot"></div><span class="dl-txt">區分所有權人會議紀錄範本</span><span class="dl-badge">DOC</span></a>
+      <a class="dl-item" href="#"><div class="dl-dot"></div><span class="dl-txt">成立補助申請須知（6–8萬）</span><span class="dl-badge">PDF</span></a>
+    </div>
+    <div class="dl-card">
+      <div class="dl-head"><div class="dl-icon-wrap ico-t">&#128737;</div><div class="dl-dept">使用科</div></div>
+      <a class="dl-item" href="#"><div class="dl-dot"></div><span class="dl-txt">合格公安檢查機構及人員名單</span><span class="dl-badge">連結</span></a>
+      <a class="dl-item" href="#"><div class="dl-dot"></div><span class="dl-txt">公安修繕補助申請規格書</span><span class="dl-badge">PDF</span></a>
+      <a class="dl-item" href="#"><div class="dl-dot"></div><span class="dl-txt">公安申報流程說明</span><span class="dl-badge">PDF</span></a>
+    </div>
+  </div>
+</div>
+
+<div class="sec fadein" id="contact">
+  <div class="sec-head">
+    <div class="sec-num">03</div>
+    <div><div class="sec-label">找對窗口</div><div class="sec-title">諮詢小幫手</div><div class="sec-sub">各階段有專責窗口，打對電話省時省力</div></div>
+  </div>
+  <div class="ct-list">
+    <div class="ct-card"><div class="ct-ico o">&#127911;</div><div><div class="ct-dept">話務人員</div><div class="ct-scope">社區初步報名與諮詢、案件分流轉介</div><div class="ct-phone">&#128222; 02-XXXX-XXXX（分機 XXX）</div></div></div>
+    <div class="ct-card"><div class="ct-ico o">&#127960;</div><div><div class="ct-dept">公寓科</div><div class="ct-scope">管委會成立輔導、成立補助申請（6–8萬）</div><div class="ct-orgs"><span class="ct-org-tag">&#128101; 輔導團</span><span class="ct-org-tag">&#127959; 危老推動師</span></div><div class="ct-phone">&#128222; 02-XXXX-XXXX（分機 XXX）</div></div></div>
+    <div class="ct-card"><div class="ct-ico t">&#128737;</div><div><div class="ct-dept">使用科</div><div class="ct-scope">公安申報、諮詢初檢安排、修繕補助申請（最高138萬）</div><div class="ct-phone">&#128222; 02-XXXX-XXXX（分機 XXX）</div></div></div>
+  </div>
+</div>
+
+<div class="pg-notice fadein">
+  <span style="font-size:18px;flex-shrink:0">&#128274;</span>
+  <div><strong>報名初檢服務皆不收任何費用。</strong>疑慮請致電 (02)2720-8889 分機 2723 或 8390（公安專案）。每棟大樓限報名一次，如遇收費請立即通報建管處。</div>
+</div>
+
+<!-- 內嵌報名表單 template -->
+<template id="ftpl">
+<div class="form-wrap">
+  <div class="fi-hero"><h3>社區報名一條龍服務</h3><p>填寫約 3 分鐘，專人 3 個工作天內主動聯繫</p></div>
+  <div class="fi-inner">
+    <div class="fi-prog">
+      <div class="fi-srow"><span class="fi-sl active" data-sl="1">大樓資料</span><span class="fi-sl" data-sl="2">管委會</span><span class="fi-sl" data-sl="3">公安申報</span><span class="fi-sl" data-sl="4">聯繫方式</span></div>
+      <div class="fi-track"><div class="fi-fill"></div></div>
+    </div>
+    <div class="fi-pg on" data-pg="1">
+      <div class="fi-qblock">
+        <div class="fi-qtitle">我們家是哪種大樓？<span class="fi-req">*</span></div>
+        <div class="fi-qhint">這決定您可以申請的補助金額</div>
+        <div class="fi-opts" data-field="btype">
+          <button class="fi-opt" data-val="8F以上純住宅大樓"><span class="fi-dot"></span><span><span class="fi-om">8 樓以上純住宅大樓<span class="fi-tag fi-tg">補助 8 萬</span></span><span class="fi-od">整棟以住家為主，無商業用途</span></span></button>
+          <button class="fi-opt" data-val="8F以上住商混合大樓"><span class="fi-dot"></span><span><span class="fi-om">8 樓以上住商混合大樓<span class="fi-tag fi-tg">補助 8 萬</span></span><span class="fi-od">低樓層有店面或辦公室</span></span></button>
+          <button class="fi-opt" data-val="6至7層集合住宅"><span class="fi-dot"></span><span><span class="fi-om">6 至 7 層樓集合住宅<span class="fi-tag fi-tg">補助 6 萬</span></span><span class="fi-od">共 6 或 7 個樓層的公寓大廈</span></span></button>
+        </div>
+        <div class="fi-err" data-err="btype">請選擇建築物類型</div>
+      </div>
+      <div class="fi-two">
+        <div class="fi-fg"><label class="fi-fl">行政區<span class="fi-req">*</span></label><select data-id="dist"><option value="">請選擇…</option><option>中正區</option><option>大同區</option><option>中山區</option><option>松山區</option><option>大安區</option><option>萬華區</option><option>信義區</option><option>士林區</option><option>北投區</option><option>內湖區</option><option>南港區</option><option>文山區</option></select><div class="fi-err" data-err="dist">請選擇行政區</div></div>
+        <div class="fi-fg"><label class="fi-fl">大樓名稱<span class="fi-fhint">（選填）</span></label><input type="text" data-id="bname" placeholder="例：○○大廈"></div>
+      </div>
+      <div class="fi-fg"><label class="fi-fl">大樓地址<span class="fi-req">*</span></label><input type="text" data-id="addr" placeholder="路名＋門牌號，例：中山北路二段 100 號"><div class="fi-err" data-err="addr">請填寫地址</div></div>
+      <div class="fi-two">
+        <div class="fi-fg"><label class="fi-fl">樓層數<span class="fi-fhint">（選填）</span></label><input type="text" data-id="floors" placeholder="例：12 樓"></div>
+        <div class="fi-fg"><label class="fi-fl">住宅戶數<span class="fi-fhint">（選填）</span></label><input type="text" data-id="units" placeholder="例：48 戶"></div>
+      </div>
+    </div>
+    <div class="fi-pg" data-pg="2">
+      <div class="fi-qblock">
+        <div class="fi-qtitle">社區現在有沒有管委會？<span class="fi-req">*</span></div>
+        <div class="fi-qhint">有沒有都可以，我們都能幫忙</div>
+        <div class="fi-opts" data-field="mgmt">
+          <button class="fi-opt" data-val="已成立並完成報備"><span class="fi-dot"></span><span><span class="fi-om">有，而且已完成報備<span class="fi-tag fi-tg">很好！</span></span></span></button>
+          <button class="fi-opt" data-val="已成立但尚未報備"><span class="fi-dot"></span><span><span class="fi-om">有，但還沒有報備<span class="fi-tag fi-ta">可協助</span></span><span class="fi-od">我們可以幫您完成報備程序</span></span></button>
+          <button class="fi-opt" data-val="未成立-有意願" data-hl="fish"><span class="fi-dot"></span><span><span class="fi-om">還沒有，想要成立<span class="fi-tag fi-tg">補助 6–8 萬</span></span><span class="fi-od">派員到府輔導，全程免費</span></span></button>
+          <button class="fi-opt" data-val="未成立-自行辦理"><span class="fi-dot"></span><span><span class="fi-om">還沒有，想自己辦理</span><span class="fi-od">提供書面資料與流程說明</span></span></button>
+          <button class="fi-opt" data-val="住戶尚無共識"><span class="fi-dot"></span><span><span class="fi-om">住戶還沒有共識</span><span class="fi-od">沒關係，可以先了解公安申報</span></span></button>
+        </div>
+        <div class="fi-err" data-err="mgmt">請選擇一項</div>
+        <div class="fi-hl hide" id="fish-tpl"><strong>成立後即可申請補助：</strong>管委會補助 6–8 萬元，完成公安申報後另可申請修繕補助最高 138 萬元！</div>
+      </div>
+    </div>
+    <div class="fi-pg" data-pg="3">
+      <div class="fi-qblock">
+        <div class="fi-qtitle">公安申報的情況？<span class="fi-req">*</span></div>
+        <div class="fi-qhint">完成申報後最高補助修繕費 80%，上限 138 萬元</div>
+        <div class="fi-opts" data-field="gongan">
+          <button class="fi-opt" data-val="已完成申報" data-ts="false"><span class="fi-dot"></span><span><span class="fi-om">已完成公安申報<span class="fi-tag fi-tg">很好！</span></span></span></button>
+          <button class="fi-opt" data-val="申請初檢諮詢" data-ts="true"><span class="fi-dot"></span><span><span class="fi-om">還沒，想請人來初檢看看<span class="fi-tag fi-tg">免費</span></span><span class="fi-od">建築師到場說明，非正式申報，完全免費</span></span></button>
+          <button class="fi-opt" data-val="需廠商名單自辦" data-ts="false"><span class="fi-dot"></span><span><span class="fi-om">還沒，想自己找廠商辦</span><span class="fi-od">提供合格檢查機構名單</span></span></button>
+          <button class="fi-opt" data-val="尚未確定" data-ts="false"><span class="fi-dot"></span><span><span class="fi-om">還沒，目前還不確定<span class="fi-tag fi-ta">可先了解</span></span></span></button>
+        </div>
+        <div class="fi-err" data-err="gongan">請選擇一項</div>
+        <div class="fi-hl hide" id="tsb-tpl" style="margin-top:.7rem"><strong>方便安排初檢的時段（可複選）</strong><div class="fi-cgrid"><label class="fi-copt"><input type="checkbox" value="上午9-12時"> 上午 9–12 時</label><label class="fi-copt"><input type="checkbox" value="下午13:30-17:30"> 下午 1:30–5:30</label><label class="fi-copt"><input type="checkbox" value="平日皆可"> 平日皆可</label><label class="fi-copt"><input type="checkbox" value="假日上午"> 假日上午</label></div></div>
+      </div>
+    </div>
+    <div class="fi-pg" data-pg="4">
+      <div class="fi-two">
+        <div class="fi-fg"><label class="fi-fl">您的姓名<span class="fi-req">*</span></label><input type="text" data-id="contact" placeholder="稱呼即可"><div class="fi-err" data-err="contact">請填寫姓名</div></div>
+        <div class="fi-fg"><label class="fi-fl">您的身份</label><select data-id="role"><option value="">請選擇</option><option>住戶自行報名</option><option>主任委員／管委代表</option><option>里長／里幹事</option><option>管理員／總幹事</option><option>代辦人員</option></select></div>
+      </div>
+      <div class="fi-fg"><label class="fi-fl">手機或電話<span class="fi-req">*</span></label><input type="tel" data-id="phone" placeholder="報名後請多留意來電"><div class="fi-err" data-err="phone">請填寫聯繫電話</div></div>
+      <div class="fi-fg"><label class="fi-fl">方便通話時間</label><div class="fi-cgrid"><label class="fi-copt"><input type="checkbox" value="上午9-12時"> 上午 9–12 時</label><label class="fi-copt"><input type="checkbox" value="下午13:30-17:30"> 下午 1:30–5:30</label></div></div>
+      <div class="fi-fg"><label class="fi-fl">備註<span class="fi-fhint">（選填）</span></label><textarea data-id="note" placeholder="有什麼特殊狀況或想補充的…"></textarea></div>
+      <div class="fi-hl">&#128274; <strong>安心保證：</strong>資料僅供建管處聯繫使用，完全免費，不會轉交任何廠商。</div>
+      <div style="display:flex;justify-content:center;margin:.9rem 0 .25rem"><div class="g-recaptcha"></div></div>
+      <div class="fi-err" data-err="recaptcha" style="text-align:center">請先完成 reCAPTCHA 驗證</div>
+    </div>
+    <div class="fi-pg" data-pg="5">
+      <div class="fi-succ"><div class="fi-sico">&#9989;</div><div class="fi-stit">報名成功！</div><div class="fi-ssub">感謝您的報名。<br>專人將在 <strong>3 個工作天內</strong>主動聯繫，<br>請留意來電號碼 (02)2720-8889。</div><div class="fi-smry" data-smry></div><p class="fi-disc">每棟大樓限報名一次。本服務完全免費，如遇收費請立即通報建管處。</p></div>
+    </div>
+    <div class="fi-errbanner"></div>
+    <div class="fi-nav" data-nav>
+      <button class="fi-bbk" style="display:none" data-back>← 上一步</button>
+      <button class="fi-bnx" data-next><span class="fi-bl">下一步 →</span><span class="fi-spin"></span></button>
+    </div>
+  </div>
+  <div class="fi-notice">報名初檢服務皆不收任何費用。疑慮請致電 (02)2720-8889 分機 2723 或 8390</div>
+</div>
+</template>
+
+<script>
+var FURL = 'https://script.google.com/macros/s/AKfycbwucfo1kocXrxd97vGrAoAaNECpdVVZIPZHCfpl69Ijz8sQihPfDuDs9UeXtyF9cpxuww/exec';
+
+function toggleS(n) {
+  var b = document.getElementById('sbody' + n), c = document.getElementById('schev' + n);
+  b.classList.contains('hide') ? (b.classList.remove('hide'), c.classList.add('open')) : (b.classList.add('hide'), c.classList.remove('open'));
+}
+function unlock(n) { document.getElementById('card' + n).classList.remove('locked'); }
+function markDone(n) { document.getElementById('snum' + n).textContent = '✓'; document.getElementById('card' + n).classList.add('done'); }
+
+function s1(val, btn) {
+  document.querySelectorAll('#sbody1 .chbtn').forEach(function(b) { b.classList.remove('sel'); });
+  btn.classList.add('sel'); markDone(1);
+  var r = document.getElementById('s1r');
+  if (val === 'yes') {
+    r.innerHTML = '<div class="rbox green"><div class="rtit">✅ 太好了！已具備補助資格</div>您的社區已完成管委會報備，可直接進入公安申報流程，並享有<strong>修繕補助資格（最高138萬）</strong>。<br><br><button class="act-btn" onclick="go2yes()">繼續確認申報意願 →</button></div>';
+  } else {
+    r.innerHTML = '<div class="rbox warn"><div class="rtit">⚠️ 了解您的狀況</div>尚未成立管委會的社區仍可辦理公安申報，但<strong>無法申請修繕補助（138萬）</strong>。建議先成立管委會，可額外獲得最高 8 萬元補助。<br><br><button class="act-btn" onclick="go2no()">繼續了解方案 →</button></div>';
+  }
+}
+
+function go2yes() {
+  unlock(2); document.getElementById('s2t').textContent = '公安申報意願'; document.getElementById('s2s').textContent = '您已具備修繕補助資格';
+  var b = document.getElementById('sbody2'); b.classList.remove('hide');
+  b.innerHTML = '<div class="choices"><button class="chbtn" onclick="s2(\'arrange\',this)"><span class="ci">📅</span><div class="ct"><div class="t1">有意願，請安排諮詢初檢</div><div class="t2">使用科媒合合格檢查機構，免費安排現場初檢</div></div></button><button class="chbtn" onclick="s2(\'selffire\',this)"><span class="ci">📋</span><div class="ct"><div class="t1">無意願，自行洽詢辦理</div><div class="t2">提供申報資訊及合格機構名單，由社區自行聯繫</div></div></button></div><div id="s2r"></div>';
+  document.getElementById('schev2').classList.add('open'); document.getElementById('card2').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function go2no() {
+  unlock(2); document.getElementById('s2t').textContent = '選擇適合您的方案'; document.getElementById('s2s').textContent = '尚未成立管委會的社區仍有多種選擇';
+  var b = document.getElementById('sbody2'); b.classList.remove('hide');
+  b.innerHTML = '<div class="choices"><button class="chbtn" onclick="s2(\'guide\',this)"><span class="ci">👥</span><div class="ct"><div class="t1">接受派員現場輔導成立管委會</div><div class="t2">輔導團或危老推動師到場協助，成立後補助 6–8 萬，另可辦公安申報</div></div></button><button class="chbtn" onclick="s2(\'selfreg\',this)"><span class="ci">📄</span><div class="ct"><div class="t1">自行辦理報備，不需派員</div><div class="t2">提供報備所需資料與範本，社區自行完成</div></div></button><button class="chbtn" onclick="s2(\'fireonly\',this)"><span class="ci">🛡️</span><div class="ct"><div class="t1">不成立管委會，直接辦公安申報</div><div class="t2">可辦理申報，但不具修繕補助（最高138萬）資格</div></div></button></div><div id="s2r"></div>';
+  document.getElementById('schev2').classList.add('open'); document.getElementById('card2').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function s2(val, btn) {
+  document.querySelectorAll('#sbody2 .chbtn').forEach(function(b) { b.classList.remove('sel'); });
+  btn.classList.add('sel'); markDone(2);
+  var r = document.getElementById('s2r');
+  if (val === 'arrange') {
+    r.innerHTML = '<div class="rbox green"><div class="rtit">✅ 好的，幫您安排諮詢初檢</div><span class="chip chip-o">使用科承辦</span><span class="chip chip-o">合格機構媒合</span><br>完成公安申報後即可申請<strong>修繕補助（80%，最高138萬）</strong>。<br><br><button class="act-btn" onclick="go3(true)">查看後續補助說明 →</button> <button class="act-btn ghost" onclick="showForm(\'sbody2\')">立即線上報名</button></div>';
+    go3(true);
+  } else if (val === 'selffire') {
+    r.innerHTML = '<div class="rbox"><div class="rtit">📋 自行辦理資源</div>請至下方「使用科專區」下載合格機構名單。完成申報後同樣可申請修繕補助。<br><br><a href="#downloads" class="act-btn">前往下載專區 →</a></div>';
+  } else if (val === 'guide') {
+    r.innerHTML = '<div class="rbox green"><div class="rtit">✅ 安排輔導團到場協助</div><span class="chip chip-o">輔導團</span><span class="chip chip-o">危老推動師</span><br>• 6、7 樓大廈：<strong>補助 6 萬元</strong><br>• 8 樓以上大廈：<strong>補助 8 萬元</strong><br><br><button class="act-btn" onclick="go3(true)">成立後如何辦公安申報？ →</button> <button class="act-btn ghost" onclick="showForm(\'sbody2\')">立即線上報名</button></div>';
+    go3(true);
+  } else if (val === 'selfreg') {
+    r.innerHTML = '<div class="rbox"><div class="rtit">📄 自行報備資料</div>請至下方「公寓科專區」下載報備表與會議記錄範本。完成報備後可回步驟一以「已成立管委會」身分申請補助。<br><br><a href="#downloads" class="act-btn">前往下載專區 →</a></div>';
+  } else {
+    r.innerHTML = '<div class="rbox warn"><div class="rtit">⚠️ 注意：此路線無修繕補助</div><span class="chip chip-r">不含修繕補助</span><br>您仍可辦理公安申報，但<strong>無法申請最高138萬修繕補助</strong>，建議評估是否先成立管委會。<br><br><button class="act-btn" onclick="go3(false)">仍要辦公安申報 →</button></div>';
+    go3(false);
+  }
+}
+
+function go3(hasS) {
+  unlock(3); markDone(3);
+  var b = document.getElementById('sbody3'); b.classList.remove('hide');
+  if (hasS) {
+    b.innerHTML = '<div class="rbox green" style="margin-top:0"><div class="rtit">🎉 恭喜！即將完成整個申請流程</div><span class="chip chip-g">公安申報完成</span><span class="chip chip-o">申請修繕補助</span><br>社區完成公安申報後，即可向<strong>使用科</strong>申請：<br>• 修繕補助比例：<strong>核定費用的 80%</strong><br>• 補助上限：<strong>最高 138 萬元</strong><br><br><button class="act-btn" onclick="showForm(\'sbody3\')">立即線上報名 →</button></div>';
+  } else {
+    b.innerHTML = '<div class="rbox warn" style="margin-top:0"><div class="rtit">📋 公安申報辦理資訊</div>下載合格公安檢查機構名單，自行聯繫安排。如日後成立管委會，可再申請修繕補助。<br><br><a href="#downloads" class="act-btn">前往下載專區 →</a></div>';
+  }
+  document.getElementById('schev3').classList.add('open'); document.getElementById('card3').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function showForm(pid) {
+  var par = document.getElementById(pid);
+  if (par.querySelector('.form-wrap')) return;
+  var clone = document.getElementById('ftpl').content.cloneNode(true);
+  var wrap = clone.querySelector('.form-wrap');
+  initForm(wrap);
+  par.appendChild(wrap);
+  setTimeout(function() { wrap.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+}
+
+function initForm(root) {
+  var S = { btype:'', mgmt:'', gongan:'', dist:'', addr:'', bname:'', floors:'', units:'', contact:'', role:'', phone:'', note:'', timeSlots:[], callTime:[] };
+  var cur = 1;
+  var pcts = ['25%', '50%', '75%', '95%'];
+  var rcWidgetId = null;
+
+  setTimeout(function() {
+    var rcDiv = root.querySelector('.g-recaptcha');
+    if (rcDiv && typeof grecaptcha !== 'undefined' && grecaptcha.render) {
+      rcWidgetId = grecaptcha.render(rcDiv, { sitekey: '6Lfd-_ksAAAAAIJbUzSuOLng0qsiRi2QXOjw4wmu' });
+    }
+  }, 300);
+
+  root.querySelectorAll('.fi-opts').forEach(function(opts) {
+    opts.querySelectorAll('.fi-opt').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var f = opts.dataset.field;
+        S[f] = btn.dataset.val;
+        opts.querySelectorAll('.fi-opt').forEach(function(b) { b.classList.remove('sel'); });
+        btn.classList.add('sel');
+        var e = root.querySelector('[data-err="' + f + '"]'); if (e) e.classList.remove('on');
+        if (btn.dataset.hl) { var hl = root.querySelector('#fish-tpl'); if (hl) hl.classList.remove('hide'); }
+        if (btn.dataset.ts !== undefined) { var tsb = root.querySelector('#tsb-tpl'); if (tsb) tsb.classList.toggle('hide', btn.dataset.ts !== 'true'); }
+      });
+    });
+  });
+
+  root.querySelectorAll('.fi-copt').forEach(function(l) {
+    l.addEventListener('click', function() { l.classList.toggle('chk', l.querySelector('input').checked); });
+  });
+
+  function rp(n) {
+    root.querySelector('.fi-fill').style.width = pcts[n - 1];
+    root.querySelectorAll('[data-sl]').forEach(function(s) { var i = parseInt(s.dataset.sl); s.className = 'fi-sl' + (i < n ? ' done' : i === n ? ' active' : ''); });
+    root.querySelector('[data-back]').style.display = n > 1 ? '' : 'none';
+    root.querySelector('.fi-bl').textContent = n < 4 ? '下一步 →' : '送出報名';
+  }
+
+  function sp(n) {
+    root.querySelectorAll('.fi-pg').forEach(function(p) { p.classList.remove('on'); });
+    root.querySelector('[data-pg="' + n + '"]').classList.add('on');
+    root.querySelector('[data-nav]').style.display = n === 5 ? 'none' : '';
+    rp(Math.min(n, 4));
+  }
+
+  function gv(id) { var el = root.querySelector('[data-id="' + id + '"]'); return el ? (el.value || '').trim() : ''; }
+  function sh(f) { var e = root.querySelector('[data-err="' + f + '"]'); if (e) { e.classList.add('on'); return false; } return true; }
+  function hd(f) { var e = root.querySelector('[data-err="' + f + '"]'); if (e) e.classList.remove('on'); }
+
+  function validate(n) {
+    var ok = true;
+    function req(field, val) { if (!val) { sh(field); ok = false; } else hd(field); }
+    if (n === 1) {
+      S.dist = gv('dist'); S.addr = gv('addr'); S.bname = gv('bname'); S.floors = gv('floors'); S.units = gv('units');
+      req('btype', S.btype); req('dist', S.dist); req('addr', S.addr);
+    }
+    if (n === 2) req('mgmt', S.mgmt);
+    if (n === 3) {
+      req('gongan', S.gongan);
+      S.timeSlots = Array.from(root.querySelectorAll('#tsb-tpl input:checked')).map(function(c) { return c.value; });
+    }
+    if (n === 4) {
+      S.contact = gv('contact'); S.role = gv('role'); S.phone = gv('phone'); S.note = gv('note');
+      S.callTime = Array.from(root.querySelectorAll('[data-pg="4"] .fi-copt input:checked')).map(function(c) { return c.value; });
+      req('contact', S.contact); req('phone', S.phone);
+    }
+    return ok;
+  }
+
+  root.querySelector('[data-next]').addEventListener('click', function() {
+    if (!validate(cur)) return;
+    if (cur < 4) { cur++; sp(cur); } else sub();
+  });
+  root.querySelector('[data-back]').addEventListener('click', function() { if (cur > 1) { cur--; sp(cur); } });
+
+  async function sub() {
+    var bn = root.querySelector('[data-next]');
+    var rcToken = '';
+    try { rcToken = grecaptcha.getResponse(rcWidgetId); } catch(e) {}
+    if (!rcToken) { sh('recaptcha'); return; }
+    hd('recaptcha');
+    bn.disabled = true; bn.classList.add('ld');
+    var banner = root.querySelector('.fi-errbanner');
+    banner.style.display = 'none';
+    try {
+      var res = await fetch(FURL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(Object.assign({}, S, { source: '網頁表單', authToken: 'cmo-taipei-2026-gongan', recaptchaToken: rcToken }))
+      });
+      var result = await res.json();
+      if (result.status === 'ok') {
+        var rows = [['行政區',S.dist],['地址',S.addr+(S.bname?' ('+S.bname+')':'')],['建築類型',S.btype],['管委會狀態',S.mgmt],['公安申報',S.gongan],['聯繫人',S.contact+(S.role?' / '+S.role:'')],['電話',S.phone]];
+        root.querySelector('[data-smry]').innerHTML = rows.map(function(r) { return '<div class="fi-sr"><span class="fi-sk">'+r[0]+'</span><span class="fi-sv">'+r[1]+'</span></div>'; }).join('');
+        cur = 5; sp(5);
+      } else {
+        banner.textContent = '填寫失敗：' + (result.message || '請稍後再試');
+        banner.style.display = 'block';
+        try { grecaptcha.reset(rcWidgetId); } catch(e) {}
+      }
+    } catch(e) {
+      banner.textContent = '網路連線異常，請稍後再試或電話聯繫。';
+      banner.style.display = 'block';
+      try { grecaptcha.reset(rcWidgetId); } catch(e) {}
+    }
+    bn.disabled = false; bn.classList.remove('ld');
+  }
+
+  rp(1);
+}
+</script>
+
+</body>
+</html>
