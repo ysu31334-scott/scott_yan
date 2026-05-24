@@ -319,28 +319,44 @@ function back(){if(cur>1){cur--;sp(cur);}}
 
 async function sub(){
   var b=document.getElementById('bnx');
-  b.disabled=true;b.classList.add('ld');
+  b.disabled=true; b.classList.add('ld');
   document.getElementById('err-banner').classList.remove('on');
-  try{
-    var rcToken=grecaptcha.getResponse();
-    var payload=Object.assign({},S,{
-      source:'網頁表單',
-      authToken:AUTH_TOKEN,
-      recaptchaToken:rcToken
+  
+  try {
+    var rcToken = grecaptcha.getResponse();
+    var payload = Object.assign({}, S, {
+      source: '網頁表單',
+      authToken: AUTH_TOKEN,
+      recaptchaToken: rcToken
     });
-    await fetch(FORM_URL,{
-      method:'POST',
-      mode:'no-cors',
-      headers:{'Content-Type':'text/plain'},
-      body:JSON.stringify(payload)
+
+    // 💡 修正點：移除 mode: 'no-cors'，改用標準 fetch
+    // 為了完美避開 Apps Script 的 CORS 限制，將 JSON 改用 text/plain 傳送，
+    // 後端一樣可以用 JSON.parse() 解析。
+    var response = await fetch(FORM_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8' 
+      },
+      body: JSON.stringify(payload)
     });
-    done();
-  }catch(e){
-    document.getElementById('err-banner').textContent='網路連線異常，請稍後再試或電話聯繫。';
+
+    var result = await response.json(); // 這時候就能正常讀取後端回傳的 JSON 了
+
+    if (result.status === "ok") {
+      done();
+    } else {
+      document.getElementById('err-banner').textContent = '填寫失敗：' + result.message;
+      document.getElementById('err-banner').classList.add('on');
+      grecaptcha.reset();
+    }
+  } catch(e) {
+    console.error(e);
+    document.getElementById('err-banner').textContent = '網路連線異常，請稍後再試或電話聯繫。';
     document.getElementById('err-banner').classList.add('on');
     grecaptcha.reset();
   }
-  b.disabled=false;b.classList.remove('ld');
+  b.disabled = false; b.classList.remove('ld');
 }
 
 function done(){
