@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>社區報名一條龍服務</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --o900:#6B3000;--o800:#B85500;--o700:#D4700A;--o500:#F0960E;
+  --o200:#FFD89A;--o100:#FFF0D0;--o50:#FFFAF2;--gold:#FFD166;
+  --ink:#1A0F00;--ink2:#3D2B10;--ink3:#7A5F3A;
+  --surf:#FFFFFF;--surf2:#FAFAF8;--surf3:#F2EDE5;
+  --gr:#2E7D32;--gr-bg:#E8F5E9;
+  --red:#C0392B;
+  --r:14px;--r2:22px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--surf2);color:var(--ink);min-height:100vh;padding:0 0 3rem}
+
+.hero{background:var(--o800);padding:2.5rem 1.5rem 3.5rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 110% 50%,rgba(255,209,102,.18) 0%,transparent 70%),repeating-linear-gradient(-45deg,transparent 0,transparent 18px,rgba(255,255,255,.025) 18px,rgba(255,255,255,.025) 19px)}
+.hero-kicker{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:.75rem;position:relative}
+.hero h1{font-size:clamp(20px,5vw,28px);font-weight:900;color:#fff;line-height:1.3;margin-bottom:.5rem;position:relative}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero p{font-size:13px;color:rgba(255,255,255,.78);line-height:1.7;margin-bottom:1.25rem;position:relative}
+.pills{display:flex;justify-content:center;gap:.5rem;flex-wrap:wrap;position:relative}
+.pill{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:50px;padding:.35rem .9rem;font-size:12px;font-weight:600;color:#fff}
+
+.outer{max-width:580px;margin:-2rem auto 0;padding:0 1rem}
+.card{background:#fff;border-radius:var(--r2);box-shadow:0 4px 24px rgba(184,85,0,.12);overflow:hidden}
+
+.prog-wrap{padding:1.25rem 1.5rem .75rem;border-bottom:1px solid #F0EBE2}
+.step-row{display:flex;justify-content:space-between;margin-bottom:.5rem}
+.sl{font-size:11px;color:var(--ink3);flex:1;text-align:center;transition:color .3s;font-weight:500}
+.sl.active{color:var(--o700);font-weight:800}
+.sl.done{color:var(--o500)}
+.track{height:4px;background:#EDE5D8;border-radius:4px;overflow:hidden}
+.fill{height:100%;background:var(--o700);border-radius:4px;transition:width .4s;width:25%}
+
+.pg{display:none;padding:1.5rem}
+.pg.on{display:block}
+.qtitle{font-size:15px;font-weight:700;margin-bottom:.2rem;line-height:1.4;color:var(--ink)}
+.qhint{font-size:12px;color:var(--ink3);margin-bottom:.75rem;line-height:1.5}
+.req{color:var(--red)}
+.qblock{margin-bottom:1.25rem}
+
+.opts{display:flex;flex-direction:column;gap:.45rem}
+.opt{display:flex;align-items:flex-start;gap:.7rem;padding:.8rem 1rem;border:1.5px solid #EDE5D8;border-radius:var(--r);cursor:pointer;background:var(--surf2);text-align:left;width:100%;font-family:inherit;transition:.15s}
+.opt:hover{border-color:var(--o500);background:var(--o50)}
+.opt.sel{border-color:var(--o700);background:var(--o50)}
+.dot{width:17px;height:17px;border:2px solid #CCC;border-radius:50%;flex-shrink:0;margin-top:2px;position:relative;transition:.15s}
+.opt.sel .dot{background:var(--o700);border-color:var(--o700)}
+.dot::after{content:'';display:none;width:6px;height:6px;background:#fff;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+.opt.sel .dot::after{display:block}
+.om{font-size:14px;font-weight:600;line-height:1.4;color:var(--ink)}
+.od{font-size:12px;color:var(--ink3);margin-top:2px;line-height:1.4}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:1px 7px;border-radius:50px;margin-left:5px;vertical-align:middle}
+.tg{background:var(--o100);color:var(--o800)}
+.ta{background:#FFF3E0;color:#7A5000;border:1px solid #F0C060}
+
+.fg{margin-bottom:1rem}
+.fl{display:block;font-size:13px;font-weight:700;color:var(--ink2);margin-bottom:.35rem}
+.fhint{font-weight:400;color:var(--ink3);font-size:12px;margin-left:.2rem}
+.card input,.card select,.card textarea{width:100%;padding:.6rem .85rem;border:1.5px solid #DDD;border-radius:var(--r);font-family:inherit;font-size:14px;color:var(--ink);background:var(--surf2);transition:border-color .15s;appearance:none}
+.card input:focus,.card select:focus,.card textarea:focus{outline:none;border-color:var(--o700);box-shadow:0 0 0 3px rgba(212,112,10,.1)}
+.card textarea{height:75px;resize:none}
+.card select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .85rem center;padding-right:2.4rem}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+@media(max-width:400px){.two{grid-template-columns:1fr}}
+
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin-top:.5rem}
+.copt{display:flex;align-items:center;gap:.45rem;padding:.6rem .85rem;border:1.5px solid #DDD;border-radius:var(--r);cursor:pointer;font-size:13px;transition:.15s;user-select:none}
+.copt:hover{border-color:var(--o500);background:var(--o50)}
+.copt.chk{border-color:var(--o700);background:var(--o50)}
+.copt input{accent-color:var(--o700);width:15px;height:15px;flex-shrink:0}
+
+.hl{background:var(--o50);border:1px solid var(--o100);border-radius:var(--r);padding:.8rem 1rem;font-size:13px;color:var(--o800);line-height:1.6;margin-top:.75rem}
+.hl strong{font-weight:700}
+.hl.hide{display:none}
+
+.err{font-size:12px;color:var(--red);margin-top:.3rem;display:none}
+.err.on{display:block}
+
+.recaptcha-wrap{display:flex;justify-content:center;margin:1rem 0 .5rem}
+.err-recaptcha{font-size:12px;color:var(--red);text-align:center;display:none;margin-bottom:.5rem}
+.err-recaptcha.on{display:block}
+
+.nav{display:flex;gap:.75rem;padding:1rem 1.5rem 1.5rem;border-top:1px solid #EDE5D8}
+.bbk{padding:0 1.2rem;height:48px;border:1.5px solid #DDD;border-radius:var(--r);font-family:inherit;font-size:14px;color:var(--ink3);cursor:pointer;background:var(--surf2);font-weight:500}
+.bbk:hover{background:var(--surf3)}
+.bnx{flex:1;height:48px;border:none;border-radius:var(--r);font-family:inherit;font-size:15px;font-weight:800;color:#fff;cursor:pointer;background:var(--o700);display:flex;align-items:center;justify-content:center;gap:.4rem;transition:.15s}
+.bnx:hover{background:var(--o800)}
+.bnx:disabled{background:#CCC;cursor:not-allowed}
+.spin{width:17px;height:17px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;display:none}
+.bnx.ld .spin{display:block}
+.bnx.ld .bl{display:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.succ{text-align:center;padding:2.5rem 1.5rem 3rem}
+.sico{width:64px;height:64px;background:var(--o100);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;font-size:28px}
+.stit{font-size:21px;font-weight:800;margin-bottom:.5rem}
+.ssub{font-size:14px;color:var(--ink3);line-height:1.7;margin-bottom:1.5rem}
+.smry{background:var(--surf3);border-radius:var(--r);padding:.9rem 1.1rem;text-align:left;margin-bottom:1.2rem}
+.srow{display:flex;justify-content:space-between;padding:.35rem 0;font-size:13px;border-bottom:1px solid #E0D8CE}
+.srow:last-child{border-bottom:none}
+.sk{color:var(--ink3);flex-shrink:0;margin-right:.75rem}
+.sv{font-weight:700;text-align:right}
+.disc{font-size:11px;color:var(--ink3);line-height:1.6}
+
+.notice{background:var(--o50);border-top:1px solid var(--o100);padding:.7rem 1.5rem;font-size:12px;color:var(--o800);text-align:center;line-height:1.6}
+
+.err-banner{background:#FEECEC;border:1px solid #F5C1C1;border-radius:var(--r);padding:.75rem 1rem;font-size:13px;color:#A02020;margin-bottom:1rem;display:none}
+.err-banner.on{display:block}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-kicker">臺北市建築管理工程處</div>
+  <h1>讓社區更安全<br><em>政府幫你拿補助</em></h1>
+  <p>3 分鐘填完，專人主動聯繫<br>免費到府輔導，管委會成立到公安申報一條龍搞定</p>
+  <div class="pills">
+    <div class="pill">🏠 管委會補助最高 8 萬</div>
+    <div class="pill">🔧 修繕補助最高 138 萬</div>
+    <div class="pill">✅ 完全免費</div>
+  </div>
+</div>
+
+<div class="outer"><div class="card">
+  <div class="prog-wrap">
+    <div class="step-row">
+      <span class="sl active" id="sl1">大樓資料</span>
+      <span class="sl" id="sl2">管委會</span>
+      <span class="sl" id="sl3">公安申報</span>
+      <span class="sl" id="sl4">聯繫方式</span>
+    </div>
+    <div class="track"><div class="fill" id="pbar"></div></div>
+  </div>
+
+  <!-- p1 -->
+  <div class="pg on" id="p1">
+    <div class="qblock">
+      <div class="qtitle">我們家是哪種大樓？<span class="req">*</span></div>
+      <div class="qhint">這決定您可以申請的補助金額</div>
+      <div class="opts" id="opts-btype">
+        <button class="opt" onclick="pick('btype','8F以上純住宅大樓',this)"><span class="dot"></span><span><span class="om">8 樓以上純住宅大樓<span class="tag tg">補助 8 萬</span></span><span class="od">整棟以住家為主，無商業用途</span></span></button>
+        <button class="opt" onclick="pick('btype','8F以上住商混合大樓',this)"><span class="dot"></span><span><span class="om">8 樓以上住商混合大樓<span class="tag tg">補助 8 萬</span></span><span class="od">低樓層有店面或辦公室</span></span></button>
+        <button class="opt" onclick="pick('btype','6至7層集合住宅',this)"><span class="dot"></span><span><span class="om">6 至 7 層樓集合住宅<span class="tag tg">補助 6 萬</span></span><span class="od">共 6 或 7 個樓層的公寓大廈</span></span></button>
+      </div>
+      <div class="err" id="err-btype">請選擇建築物類型</div>
+    </div>
+    <div class="two">
+      <div class="fg"><label class="fl">行政區<span class="req">*</span></label><select id="f-dist"><option value="">請選擇…</option><option>中正區</option><option>大同區</option><option>中山區</option><option>松山區</option><option>大安區</option><option>萬華區</option><option>信義區</option><option>士林區</option><option>北投區</option><option>內湖區</option><option>南港區</option><option>文山區</option></select><div class="err" id="err-dist">請選擇行政區</div></div>
+      <div class="fg"><label class="fl">大樓名稱<span class="fhint">（選填）</span></label><input type="text" id="f-bname" placeholder="例：○○大廈"></div>
+    </div>
+    <div class="fg"><label class="fl">大樓地址<span class="req">*</span></label><input type="text" id="f-addr" placeholder="路名＋門牌號，例：中山北路二段 100 號"><div class="err" id="err-addr">請填寫地址</div></div>
+    <div class="two">
+      <div class="fg"><label class="fl">樓層數<span class="fhint">（選填）</span></label><input type="text" id="f-floors" placeholder="例：12 樓"></div>
+      <div class="fg"><label class="fl">住宅戶數<span class="fhint">（選填）</span></label><input type="text" id="f-units" placeholder="例：48 戶"></div>
+    </div>
+  </div>
+
+  <!-- p2 -->
+  <div class="pg" id="p2">
+    <div class="qblock">
+      <div class="qtitle">社區現在有沒有管委會？<span class="req">*</span></div>
+      <div class="qhint">有沒有都可以，我們都能幫忙</div>
+      <div class="opts" id="opts-mgmt">
+        <button class="opt" onclick="pick('mgmt','已成立並完成報備',this)"><span class="dot"></span><span><span class="om">有，而且已完成報備<span class="tag tg">很好！</span></span></span></button>
+        <button class="opt" onclick="pick('mgmt','已成立但尚未報備',this)"><span class="dot"></span><span><span class="om">有，但還沒有報備<span class="tag ta">可協助</span></span><span class="od">我們可以幫您完成報備程序</span></span></button>
+        <button class="opt" onclick="pick('mgmt','未成立-有意願',this);document.getElementById('sh').classList.remove('hide')"><span class="dot"></span><span><span class="om">還沒有，想要成立<span class="tag tg">補助 6–8 萬</span></span><span class="od">派員到府輔導，全程免費</span></span></button>
+        <button class="opt" onclick="pick('mgmt','未成立-自行辦理',this)"><span class="dot"></span><span><span class="om">還沒有，想自己辦理</span><span class="od">提供書面資料與流程說明</span></span></button>
+        <button class="opt" onclick="pick('mgmt','住戶尚無共識',this)"><span class="dot"></span><span><span class="om">住戶還沒有共識</span><span class="od">沒關係，可以先了解公安申報</span></span></button>
+      </div>
+      <div class="err" id="err-mgmt">請選擇一項</div>
+      <div class="hl hide" id="sh"><strong>成立後即可申請補助：</strong>管委會補助 6–8 萬元，完成公安申報後另可申請修繕補助最高 138 萬元！</div>
+    </div>
+  </div>
+
+  <!-- p3 -->
+  <div class="pg" id="p3">
+    <div class="qblock">
+      <div class="qtitle">公安申報的情況？<span class="req">*</span></div>
+      <div class="qhint">完成申報後最高補助修繕費 80%，上限 138 萬元</div>
+      <div class="opts" id="opts-gongan">
+        <button class="opt" onclick="pick('gongan','已完成申報',this);ts(false)"><span class="dot"></span><span><span class="om">已完成公安申報<span class="tag tg">很好！</span></span></span></button>
+        <button class="opt" onclick="pick('gongan','申請初檢諮詢',this);ts(true)"><span class="dot"></span><span><span class="om">還沒，想請人來初檢看看<span class="tag tg">免費</span></span><span class="od">建築師到場說明，非正式申報，完全免費</span></span></button>
+        <button class="opt" onclick="pick('gongan','需廠商名單自辦',this);ts(false)"><span class="dot"></span><span><span class="om">還沒，想自己找廠商辦</span><span class="od">提供合格檢查機構名單</span></span></button>
+        <button class="opt" onclick="pick('gongan','尚未確定',this);ts(false)"><span class="dot"></span><span><span class="om">還沒，目前還不確定<span class="tag ta">可先了解</span></span></span></button>
+      </div>
+      <div class="err" id="err-gongan">請選擇一項</div>
+      <div id="tsb" class="hl hide" style="margin-top:.8rem">
+        <strong>方便安排初檢的時段（可複選）</strong>
+        <div class="cgrid">
+          <label class="copt" onclick="tc(this)"><input type="checkbox" value="上午9-12時"> 上午 9–12 時</label>
+          <label class="copt" onclick="tc(this)"><input type="checkbox" value="下午13:30-17:30"> 下午 1:30–5:30</label>
+          <label class="copt" onclick="tc(this)"><input type="checkbox" value="平日皆可"> 平日皆可</label>
+          <label class="copt" onclick="tc(this)"><input type="checkbox" value="假日上午"> 假日上午</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- p4 -->
+  <div class="pg" id="p4">
+    <div class="err-banner" id="err-banner">送出失敗，請稍後再試或電話聯繫。</div>
+    <div class="two">
+      <div class="fg"><label class="fl">您的姓名<span class="req">*</span></label><input type="text" id="f-contact" placeholder="稱呼即可"><div class="err" id="err-contact">請填寫姓名</div></div>
+      <div class="fg"><label class="fl">您的身份</label><select id="f-role"><option value="">請選擇</option><option>住戶自行報名</option><option>主任委員／管委代表</option><option>里長／里幹事</option><option>管理員／總幹事</option><option>代辦人員</option></select></div>
+    </div>
+    <div class="fg"><label class="fl">手機或電話<span class="req">*</span></label><input type="tel" id="f-phone" placeholder="報名後請多留意來電"><div class="err" id="err-phone">請填寫聯繫電話</div></div>
+    <div class="fg">
+      <label class="fl">方便通話時間</label>
+      <div class="cgrid">
+        <label class="copt" onclick="tc(this)"><input type="checkbox" value="上午9-12時"> 上午 9–12 時</label>
+        <label class="copt" onclick="tc(this)"><input type="checkbox" value="下午13:30-17:30"> 下午 1:30–5:30</label>
+      </div>
+    </div>
+    <div class="fg"><label class="fl">備註<span class="fhint">（選填）</span></label><textarea id="f-note" placeholder="有什麼特殊狀況或想補充的，請告訴我們…"></textarea></div>
+    <div class="hl" style="margin-bottom:1rem">🔒 <strong>安心保證：</strong>資料僅供建管處聯繫使用，完全免費，不會轉交任何廠商。</div>
+    <div class="recaptcha-wrap">
+      <div class="g-recaptcha" data-sitekey="6LcG6_ksAAAAAHbYAJVBO7vV5ah3zwT5SEhoIDE2"></div>
+    </div>
+    <div class="err-recaptcha" id="err-recaptcha">請先完成 reCAPTCHA 驗證</div>
+  </div>
+
+  <!-- p5 success -->
+  <div class="pg" id="p5">
+    <div class="succ">
+      <div class="sico">✅</div>
+      <div class="stit">報名成功！</div>
+      <div class="ssub">感謝您的報名。<br>專人將在 <strong>3 個工作天內</strong>主動聯繫，<br>請留意來電號碼 (02)2720-8889。</div>
+      <div class="smry" id="smry"></div>
+      <p class="disc">每棟大樓限報名一次。本服務完全免費，如遇收費請立即通報建管處。</p>
+    </div>
+  </div>
+
+  <div class="nav" id="nav">
+    <button class="bbk" id="bbk" onclick="back()" style="display:none">← 上一步</button>
+    <button class="bnx" id="bnx" onclick="next()">
+      <span class="bl">下一步 →</span><span class="spin"></span>
+    </button>
+  </div>
+</div></div>
+
+<div class="notice">報名初檢服務皆不收任何費用。疑慮請致電 (02)2720-8889 分機 2723 或 8390（公安專案）</div>
+
+<script>
+var FORM_URL='https://script.google.com/macros/s/AKfycbwucfo1kocXrxd97vGrAoAaNECpdVVZIPZHCfpl69Ijz8sQihPfDuDs9UeXtyF9cpxuww/exec';
+var AUTH_TOKEN='cmo-taipei-2026-gongan';
+
+var S={btype:'',mgmt:'',gongan:'',dist:'',addr:'',bname:'',floors:'',units:'',contact:'',role:'',phone:'',note:'',timeSlots:[],callTime:[]};
+var cur=1;
+
+function pick(f,v,b){
+  S[f]=v;
+  document.querySelectorAll('#opts-'+f+' .opt').forEach(function(x){x.classList.remove('sel');});
+  b.classList.add('sel');
+  var e=document.getElementById('err-'+f);if(e)e.classList.remove('on');
+}
+function ts(show){document.getElementById('tsb').classList.toggle('hide',!show);}
+function tc(l){l.classList.toggle('chk',l.querySelector('input').checked);}
+
+function val(n){
+  var ok=true;
+  function sh(id){var e=document.getElementById(id);if(e){e.classList.add('on');ok=false;}}
+  function hd(id){var e=document.getElementById(id);if(e)e.classList.remove('on');}
+  if(n===1){
+    S.dist=document.getElementById('f-dist').value;
+    S.addr=document.getElementById('f-addr').value.trim();
+    S.bname=document.getElementById('f-bname').value.trim();
+    S.floors=document.getElementById('f-floors').value.trim();
+    S.units=document.getElementById('f-units').value.trim();
+    !S.btype?sh('err-btype'):hd('err-btype');
+    !S.dist?sh('err-dist'):hd('err-dist');
+    !S.addr?sh('err-addr'):hd('err-addr');
+  }
+  if(n===2){!S.mgmt?sh('err-mgmt'):hd('err-mgmt');}
+  if(n===3){
+    !S.gongan?sh('err-gongan'):hd('err-gongan');
+    S.timeSlots=Array.from(document.querySelectorAll('#tsb input:checked')).map(function(c){return c.value;});
+  }
+  if(n===4){
+    S.contact=document.getElementById('f-contact').value.trim();
+    S.role=document.getElementById('f-role').value;
+    S.phone=document.getElementById('f-phone').value.trim();
+    S.note=document.getElementById('f-note').value.trim();
+    S.callTime=Array.from(document.querySelectorAll('#p4 .copt input:checked')).map(function(c){return c.value;});
+    !S.contact?sh('err-contact'):hd('err-contact');
+    !S.phone?sh('err-phone'):hd('err-phone');
+    var rc=grecaptcha.getResponse();
+    if(!rc){document.getElementById('err-recaptcha').classList.add('on');ok=false;}
+    else{document.getElementById('err-recaptcha').classList.remove('on');}
+  }
+  return ok;
+}
+
+var pcts=['25%','50%','75%','95%'];
+function rp(n){
+  document.getElementById('pbar').style.width=pcts[n-1];
+  ['sl1','sl2','sl3','sl4'].forEach(function(id,i){
+    document.getElementById(id).className='sl'+(i+1<n?' done':i+1===n?' active':'');
+  });
+  document.getElementById('bbk').style.display=n>1?'':'none';
+  document.getElementById('bnx').querySelector('.bl').textContent=n<4?'下一步 →':'送出報名';
+}
+function sp(n){
+  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
+  document.getElementById('p'+n).classList.add('on');
+  document.getElementById('nav').style.display=n===5?'none':'';
+  rp(Math.min(n,4));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function next(){if(!val(cur))return;if(cur<4){cur++;sp(cur);}else sub();}
+function back(){if(cur>1){cur--;sp(cur);}}
+
+async function sub(){
+  var b=document.getElementById('bnx');
+  b.disabled=true;b.classList.add('ld');
+  document.getElementById('err-banner').classList.remove('on');
+  try{
+    var rcToken=grecaptcha.getResponse();
+    var payload=Object.assign({},S,{
+      source:'網頁表單',
+      authToken:AUTH_TOKEN,
+      recaptchaToken:rcToken
+    });
+    var res=await fetch(FORM_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+    var json=await res.json();
+    if(json.status==='ok'){
+      done();
+    }else{
+      document.getElementById('err-banner').textContent=json.message||'送出失敗，請稍後再試或電話聯繫。';
+      document.getElementById('err-banner').classList.add('on');
+      grecaptcha.reset();
+    }
+  }catch(e){
+    document.getElementById('err-banner').textContent='網路連線異常，請稍後再試。';
+    document.getElementById('err-banner').classList.add('on');
+    grecaptcha.reset();
+  }
+  b.disabled=false;b.classList.remove('ld');
+}
+
+function done(){
+  var rows=[
+    ['行政區',S.dist],
+    ['地址',S.addr+(S.bname?' ('+S.bname+')':'')],
+    ['建築類型',S.btype],
+    ['管委會狀態',S.mgmt],
+    ['公安申報',S.gongan],
+    ['聯繫人',S.contact+(S.role?' ／ '+S.role:'')],
+    ['電話',S.phone]
+  ];
+  document.getElementById('smry').innerHTML=rows.map(function(r){
+    return '<div class="srow"><span class="sk">'+r[0]+'</span><span class="sv">'+r[1]+'</span></div>';
+  }).join('');
+  cur=5;sp(5);
+}
+rp(1);
+</script>
+</body>
+</html>
