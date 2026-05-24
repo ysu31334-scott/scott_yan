@@ -328,21 +328,17 @@ async function sub(){
       authToken:AUTH_TOKEN,
       recaptchaToken:rcToken
     });
-    var res=await fetch(FORM_URL,{
+    // 使用 no-cors 避免 CORS 問題，Apps Script 不支援跨來源 preflight
+    await fetch(FORM_URL,{
       method:'POST',
+      mode:'no-cors',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify(payload)
     });
-    var json=await res.json();
-    if(json.status==='ok'){
-      done();
-    }else{
-      document.getElementById('err-banner').textContent=json.message||'送出失敗，請稍後再試或電話聯繫。';
-      document.getElementById('err-banner').classList.add('on');
-      grecaptcha.reset();
-    }
+    // no-cors 下無法讀取回應，假設送出成功直接顯示成功畫面
+    done();
   }catch(e){
-    document.getElementById('err-banner').textContent='網路連線異常，請稍後再試。';
+    document.getElementById('err-banner').textContent='網路連線異常，請稍後再試或電話聯繫。';
     document.getElementById('err-banner').classList.add('on');
     grecaptcha.reset();
   }
