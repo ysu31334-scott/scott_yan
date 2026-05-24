@@ -320,48 +320,27 @@ function back(){if(cur>1){cur--;sp(cur);}}
 async function sub(){
   var b=document.getElementById('bnx');
   b.disabled=true;b.classList.add('ld');
-
-  var rcToken=grecaptcha.getResponse();
-  if(!rcToken){
-    document.getElementById('err-recaptcha').classList.add('on');
-    b.disabled=false;b.classList.remove('ld');
-    return;
-  }
-
-  // 建立隱藏 iframe 接收回應
-  var iframe=document.createElement('iframe');
-  iframe.name='submit-target';
-  iframe.style.display='none';
-  document.body.appendChild(iframe);
-
-  // 建立隱藏 form
-  var form=document.createElement('form');
-  form.method='POST';
-  form.action=FORM_URL;
-  form.target='submit-target';
-  form.style.display='none';
-
-  var payload=Object.assign({},S,{
-    source:'網頁表單',
-    authToken:AUTH_TOKEN,
-    recaptchaToken:rcToken
-  });
-
-  var input=document.createElement('input');
-  input.type='hidden';
-  input.name='data';
-  input.value=JSON.stringify(payload);
-  form.appendChild(input);
-  document.body.appendChild(form);
-
-  iframe.onload=function(){
+  document.getElementById('err-banner').classList.remove('on');
+  try{
+    var rcToken=grecaptcha.getResponse();
+    var payload=Object.assign({},S,{
+      source:'網頁表單',
+      authToken:AUTH_TOKEN,
+      recaptchaToken:rcToken
+    });
+    await fetch(FORM_URL,{
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'text/plain'},
+      body:JSON.stringify(payload)
+    });
     done();
-    document.body.removeChild(form);
-    document.body.removeChild(iframe);
-    b.disabled=false;b.classList.remove('ld');
-  };
-
-  form.submit();
+  }catch(e){
+    document.getElementById('err-banner').textContent='網路連線異常，請稍後再試或電話聯繫。';
+    document.getElementById('err-banner').classList.add('on');
+    grecaptcha.reset();
+  }
+  b.disabled=false;b.classList.remove('ld');
 }
 
 function done(){
