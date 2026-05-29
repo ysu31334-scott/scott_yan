@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>公安一條龍輔導申辦服務 — 臺北市建築管理工程處</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1C1008;
+  --ink2:#4A3520;
+  --ink3:#8A7055;
+  --o900:#5C2800;
+  --o800:#7A3800;
+  --o700:#A84F00;
+  --o500:#D46A0A;
+  --o300:#EF9F27;
+  --o100:#FAEEDA;
+  --o50:#FFFAF4;
+  --gold:#F5C842;
+  --gr:#27500A;
+  --gr-bg:#EAF3DE;
+  --teal:#085041;
+  --teal-bg:#E1F5EE;
+  --surf:#FFFFFF;
+  --bg:#F2EBE0;
+  --border:#E0D5C5;
+  --r:10px;
+  --r2:16px;
+  --r3:22px;
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--ink);margin:0}
+
+/* ─── TOP NAV ─── */
+.topnav{background:var(--o800);height:44px;display:flex;align-items:center;padding:0 max(24px,5vw);justify-content:space-between;position:sticky;top:0;z-index:50}
+.topnav-brand{font-size:12px;font-weight:700;color:rgba(255,255,255,.75);letter-spacing:.3px;white-space:nowrap}
+.topnav-right{font-size:11px;color:rgba(255,255,255,.5);display:none}
+@media(min-width:768px){.topnav-right{display:block}}
+
+/* ─── HERO ─── */
+.hero{background:var(--o800);padding:clamp(28px,5vw,52px) max(20px,5vw) clamp(24px,4vw,44px)}
+.hero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:28px}
+@media(min-width:768px){.hero-inner{grid-template-columns:1fr 1fr;align-items:center;gap:36px}}
+
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:4px 12px;font-size:11px;font-weight:700;color:rgba(255,255,255,.85);letter-spacing:.3px;margin-bottom:14px}
+.hero-title{font-family:'Noto Serif TC',serif;font-size:clamp(28px,5vw,42px);font-weight:900;color:#fff;line-height:1.18;margin-bottom:10px}
+.hero-title em{font-style:normal;color:var(--gold)}
+.hero-sub{font-size:clamp(13px,2vw,15px);color:rgba(255,255,255,.72);line-height:1.8;margin-bottom:20px}
+.hero-cta{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--o800);border:none;border-radius:var(--r2);height:50px;padding:0 28px;font-size:15px;font-weight:900;font-family:inherit;cursor:pointer;text-decoration:none;transition:background .15s}
+.hero-cta:hover{background:#e8b820}
+.hero-cta:active{background:#d4a51e}
+
+.subsidy-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.s-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:var(--r2);padding:clamp(14px,3vw,20px)}
+.s-card-label{font-size:11px;color:rgba(255,255,255,.6);line-height:1.45;margin-bottom:6px}
+.s-card-num{font-size:clamp(28px,4vw,38px);font-weight:900;color:var(--gold);line-height:1;letter-spacing:-1.5px}
+.s-card-num sup{font-size:clamp(13px,2vw,18px);vertical-align:super;letter-spacing:0}
+.s-card-sub{font-size:10.5px;color:rgba(255,255,255,.5);margin-top:4px}
+.s-card.free{grid-column:span 2;display:flex;align-items:center;gap:12px;padding:clamp(12px,2.5vw,16px) clamp(14px,3vw,20px)}
+.s-card.free .free-icon{font-size:22px;flex-shrink:0}
+.s-card.free .s-card-label{margin-bottom:3px;font-size:11px}
+.s-card.free .s-card-num{font-size:clamp(15px,2.5vw,18px);letter-spacing:0}
+
+/* ─── MAIN LAYOUT ─── */
+.page-body{max-width:1100px;margin:0 auto;padding:clamp(24px,4vw,40px) max(20px,5vw) 80px}
+@media(min-width:900px){
+  .page-body{display:grid;grid-template-columns:1fr 280px;gap:32px;align-items:start}
+}
+
+/* ─── SECTION HEADER ─── */
+.sec-eye{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--o500);margin-bottom:4px}
+.sec-title{font-size:clamp(18px,3vw,22px);font-weight:900;color:var(--ink);margin-bottom:4px}
+.sec-sub{font-size:13px;color:var(--ink3);line-height:1.65;margin-bottom:16px}
+.divider{height:1px;background:var(--border);margin:24px 0}
+
+/* ─── STEPS ─── */
+.steps{display:flex;flex-direction:column;gap:0;margin-bottom:0}
+.step{display:flex;gap:14px;position:relative}
+.step:not(:last-child)::before{content:'';position:absolute;left:21px;top:44px;bottom:0;width:1.5px;background:var(--border)}
+.step-num{width:44px;height:44px;flex-shrink:0;border-radius:50%;background:var(--o100);border:2px solid var(--o300);color:var(--o800);font-size:15px;font-weight:900;display:flex;align-items:center;justify-content:center;position:relative;z-index:1}
+.step-body{flex:1;padding-bottom:20px}
+.step-title{font-size:15px;font-weight:800;color:var(--ink);margin-top:9px;margin-bottom:4px}
+.step-desc{font-size:13px;color:var(--ink3);line-height:1.65}
+.step-tag{display:inline-flex;align-items:center;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;margin-top:6px}
+.tag-amber{background:var(--o100);color:var(--o800)}
+.tag-teal{background:var(--teal-bg);color:var(--teal)}
+.tag-green{background:var(--gr-bg);color:var(--gr)}
+
+/* ─── CONTACT ─── */
+.ct-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:480px){.ct-grid{grid-template-columns:1fr}}
+.ct-card{background:var(--surf);border-radius:var(--r2);border:1.5px solid var(--border);padding:14px 16px;text-decoration:none;display:block;transition:border-color .15s,box-shadow .15s}
+.ct-card:hover{border-color:var(--o300);box-shadow:0 2px 12px rgba(168,79,0,.1)}
+.ct-top{display:flex;gap:11px;margin-bottom:0}
+.ct-icon{width:40px;height:40px;border-radius:12px;background:var(--o100);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.ct-icon.teal{background:var(--teal-bg)}
+.ct-name{font-size:14px;font-weight:800;color:var(--ink);margin-bottom:3px}
+.ct-scope{font-size:12px;color:var(--ink3);line-height:1.55}
+.ct-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.ct-tag{font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--o100);color:var(--o800)}
+.ct-tag.teal{background:var(--teal-bg);color:var(--teal)}
+.ct-tel{font-size:12px;color:var(--ink3);margin-top:10px;padding-top:10px;border-top:1px solid #EDE5D8}
+.ct-tel span{color:var(--o800);font-weight:700}
+.ct-link-hint{font-size:11px;color:var(--o500);margin-top:8px;display:flex;align-items:center;gap:4px}
+.ct-link-hint::before{content:'→';font-weight:700}
+
+/* ─── ASIDE: DOWNLOADS ─── */
+.aside-card{background:var(--surf);border-radius:var(--r2);border:1.5px solid var(--border);overflow:hidden}
+.aside-head{background:var(--o800);padding:12px 14px;display:flex;align-items:center;gap:8px}
+.aside-head-icon{font-size:18px}
+.aside-head-title{font-size:13px;font-weight:800;color:#fff}
+.aside-head-sub{font-size:10.5px;color:rgba(255,255,255,.6);margin-top:1px}
+.aside-section{font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--o500);padding:12px 14px 4px}
+.aside-body{padding:0 14px 10px}
+.dl-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #F0EAE0;cursor:pointer;text-decoration:none;transition:background .1s}
+.dl-row:last-child{border-bottom:none;padding-bottom:0}
+.dl-row:hover .dl-txt{color:var(--o700)}
+.dl-dot{width:5px;height:5px;border-radius:50%;background:var(--o300);flex-shrink:0}
+.dl-txt{font-size:12px;color:var(--ink2);flex:1;line-height:1.4;transition:color .1s}
+.dl-badge{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:999px;background:var(--o100);color:var(--o800);flex-shrink:0;white-space:nowrap}
+.dl-badge.link{background:var(--teal-bg);color:var(--teal)}
+.aside-divider{height:1px;background:var(--border);margin:0 14px}
+.aside-note{background:var(--o50);border-top:1px solid #EDE5D8;padding:10px 14px;font-size:11px;color:var(--ink3);line-height:1.65}
+.aside-note strong{color:var(--o800);font-weight:700}
+
+/* ─── NOTICE ─── */
+.notice{background:var(--surf);border:1.5px solid var(--border);border-radius:var(--r2);padding:13px 15px;display:flex;gap:10px;margin-top:24px}
+.notice-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.notice-text{font-size:12.5px;color:var(--ink3);line-height:1.7}
+.notice-text strong{color:var(--ink);font-weight:700}
+
+/* ─── MOBILE DOWNLOAD (shows only on mobile) ─── */
+.mobile-dl{display:block}
+@media(min-width:900px){.mobile-dl{display:none}}
+.mobile-dl .aside-card{margin-top:0}
+
+/* ─── DESKTOP ASIDE (shows only on desktop) ─── */
+.desktop-aside{display:none}
+@media(min-width:900px){.desktop-aside{display:block;position:sticky;top:60px}}
+
+/* ─── STICKY BOTTOM (mobile only) ─── */
+.sticky-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(242,235,224,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--border);padding:10px 20px;z-index:40}
+@media(min-width:768px){.sticky-bar{display:none}}
+.sticky-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:46px;background:var(--o700);color:#fff;border:none;border-radius:var(--r2);font-size:14px;font-weight:800;font-family:inherit;cursor:pointer;text-decoration:none;transition:background .15s}
+.sticky-btn:hover{background:var(--o800)}
+
+/* ─── FOOTER ─── */
+footer{background:var(--o800);padding:14px max(20px,5vw);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.5)}
+.footer-cta{display:inline-flex;align-items:center;gap:6px;background:var(--gold);color:var(--o800);border:none;border-radius:999px;height:34px;padding:0 18px;font-size:12px;font-weight:800;font-family:inherit;cursor:pointer;text-decoration:none;transition:background .15s}
+.footer-cta:hover{background:#e8b820}
+
+/* ─── FADE IN ─── */
+@keyframes fadein{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.fadein{opacity:0;animation:fadein .5s ease forwards}
+.fd1{animation-delay:.05s}
+.fd2{animation-delay:.12s}
+.fd3{animation-delay:.19s}
+.fd4{animation-delay:.26s}
+
+/* ─── BOTTOM PADDING for sticky bar ─── */
+@media(max-width:767px){body{padding-bottom:66px}}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <span class="topnav-brand">臺北市建築管理工程處</span>
+  <span class="topnav-right">公安一條龍輔導申辦服務</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="fadein fd1">
+      <div class="hero-badge">🏙️ 臺北市政府公費服務</div>
+      <h1 class="hero-title">公安一條龍<br><em>輔導申辦服務</em></h1>
+      <p class="hero-sub">本處提供免費到府輔導，協助社區辦理<br>管委會成立登記及建築物公安申報作業</p>
+      <a class="hero-cta"
+         href="https://script.google.com/macros/s/AKfycbwucfo1kocXrxd97vGrAoAaNECpdVVZIPZHCfpl69Ijz8sQihPfDuDs9UeXtyF9cpxuww/exec"
+         target="_blank" rel="noopener">
+        ✏️ 填寫社區報名資料
+      </a>
+    </div>
+    <div class="subsidy-grid fadein fd2">
+      <div class="s-card">
+        <div class="s-card-label">管委會成立補助</div>
+        <div class="s-card-num">8<sup>萬</sup></div>
+        <div class="s-card-sub">6–7層樓補助6萬元</div>
+      </div>
+      <div class="s-card">
+        <div class="s-card-label">公安修繕補助上限</div>
+        <div class="s-card-num">138<sup>萬</sup></div>
+        <div class="s-card-sub">補助比例最高80%</div>
+      </div>
+      <div class="s-card free">
+        <span class="free-icon">✅</span>
+        <div>
+          <div class="s-card-label">初檢諮詢 · 報名作業 · 到府輔導</div>
+          <div class="s-card-num">全程免費，不收任何費用</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE BODY -->
+<div class="page-body">
+
+  <!-- MAIN COLUMN -->
+  <main>
+
+    <!-- STEPS -->
+    <div class="fadein fd2">
+      <div class="sec-eye">辦理流程</div>
+      <h2 class="sec-title">報名後由本處承辦人員主動聯繫</h2>
+      <p class="sec-sub">民眾無需自行追蹤，承辦人員來電後將逐步協助辦理。</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">填寫線上報名表</div>
+            <p class="step-desc">填寫大樓基本資料及聯絡方式，本處收件後安排承辦人員聯繫。</p>
+            <span class="step-tag tag-amber">免費，無需到場</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">承辦人員主動來電</div>
+            <p class="step-desc">確認社區現況及需求，安排後續到府輔導或初檢作業。</p>
+            <span class="step-tag tag-teal">本處主動聯繫</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">到府輔導，協助申辦</div>
+            <p class="step-desc">管委會成立登記、公安申報、修繕補助申請，全程由本處人員協助辦理。</p>
+            <span class="step-tag tag-green">補助上限合計146萬元</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- CONTACT -->
+    <div class="fadein fd3">
+      <div class="sec-eye">聯絡窗口</div>
+      <h2 class="sec-title">各業務承辦科室</h2>
+      <p class="sec-sub">如需直接洽詢，請依業務性質聯繫對應科室。</p>
+      <div class="ct-grid">
+
+        <a class="ct-card" href="YOUR_URL_公寓大廈科" target="_blank" rel="noopener">
+          <div class="ct-top">
+            <div class="ct-icon">🏘️</div>
+            <div>
+              <div class="ct-name">公寓大廈科</div>
+              <div class="ct-scope">管委會成立輔導及補助申請（6–8萬元）</div>
+            </div>
+          </div>
+          <div class="ct-tags">
+            <span class="ct-tag">輔導團</span>
+            <span class="ct-tag">危老推動師</span>
+          </div>
+          <div class="ct-tel">電話：<span>(02) 2720-8889 分機XXX</span></div>
+          <div class="ct-link-hint">前往科室頁面</div>
+        </a>
+
+        <a class="ct-card" href="YOUR_URL_使用科" target="_blank" rel="noopener">
+          <div class="ct-top">
+            <div class="ct-icon teal">🛡️</div>
+            <div>
+              <div class="ct-name">使用科</div>
+              <div class="ct-scope">公安申報、初檢安排、修繕補助申請（上限138萬元）</div>
+            </div>
+          </div>
+          <div class="ct-tags">
+            <span class="ct-tag teal">分機 2723</span>
+            <span class="ct-tag teal">或 8390</span>
+          </div>
+          <div class="ct-tel">電話：<span>(02) 2720-8889</span></div>
+          <div class="ct-link-hint">前往科室頁面</div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- MOBILE DOWNLOADS -->
+    <div class="mobile-dl fadein fd4">
+      <div class="divider"></div>
+      <div class="sec-eye">相關文件</div>
+      <h2 class="sec-title">申辦所需表格下載</h2>
+      <div class="aside-card">
+        <div class="aside-section">公寓大廈科</div>
+        <div class="aside-body">
+          <a class="dl-row" href="#"><div class="dl-dot"></div><span class="dl-txt">管委會成立報備申請表</span><span class="dl-badge">DOC</span></a>
+          <a class="dl-row" href="#"><div class="dl-dot"></div><span class="dl-txt">區分所有權人會議紀錄範本</span><span class="dl-badge">DOC</span></a>
+          <a class="dl-row" href="#"><div class="dl-dot"></div><span class="dl-txt">管委會成立補助申請須知</span><span class="dl-badge">PDF</span></a>
+        </div>
+        <div class="aside-divider"></div>
+        <div class="aside-section">使用科</div>
+        <div class="aside-body">
+          <a class="dl-row" href="#"><div class="dl-dot"></div><span class="dl-txt">合格公安檢查機構及人員名冊</span><span class="dl-badge link">連結</span></a>
+          <a class="dl-row" href="#"><div class="dl-dot"></div><span class="dl-txt">公安修繕補助申請規格書</span><span class="dl-badge">PDF</span></a>
+          <a class="dl-row" href="#"><div class="dl-dot"></div><span class="dl-txt">公安申報作業說明</span><span class="dl-badge">PDF</span></a>
+        </div>
+        <div class="aside-note"><strong>本服務不收取任何費用。</strong>每棟建築物限申請一次。如遇任何收費情形，請即通報本處。</div>
+      </div>
+    </div>
+
+    <!-- NOTICE -->
+    <div class="notice fadein fd4">
+      <div class="notice-icon">🔒</div>
+      <div class="notice-text">
+        <strong>本服務不收取任何費用。</strong>每棟建築物限申請一次。如遇任何收費情形，請即通報本處。疑慮請洽使用科分機 2723 或 8390。
+      </div>
+    </div>
+
+  </main>
+
+  <!-- DESKTOP ASIDE -->
+  <aside class="desktop-aside fadein fd3">
+    <div class="aside-card">
+      <div class="aside-head">
+        <span class="aside-head-icon">📥</span>
+        <div>
+          <div class="aside-head-title">申辦表格下載</div>
+          <div class="aside-head-sub">點選檔名即可下載</div>
+        </div>
+      </div>
+      <div class="aside-section">公寓大廈科</div>
+      <div class="aside-body">
+        <a class="dl-row" href="#"><div class="dl-dot"></div><span class="dl-txt">管委會成立報備申請表</span><span class="dl-badge">DOC</span></a>
+        <a class="dl-row" href="#"><div class="dl-dot"></div><span class="dl-txt">區分所有權人會議紀錄範本</span><span class="dl-badge">DOC</span></a>
+        <a class="dl-row" href="#"><div class="dl-dot"></div><span class="dl-txt">管委會成立補助申請須知</span><span class="dl-badge">PDF</span></a>
+      </div>
+      <div class="aside-divider"></div>
+      <div class="aside-section">使用科</div>
+      <div class="aside-body">
+        <a class="dl-row" href="#"><div class="dl-dot"></div><span class="dl-txt">合格公安檢查機構及人員名冊</span><span class="dl-badge link">連結</span></a>
+        <a class="dl-row" href="#"><div class="dl-dot"></div><span class="dl-txt">公安修繕補助申請規格書</span><span class="dl-badge">PDF</span></a>
+        <a class="dl-row" href="#"><div class="dl-dot"></div><span class="dl-txt">公安申報作業說明</span><span class="dl-badge">PDF</span></a>
+      </div>
+      <div class="aside-note"><strong>本服務不收取任何費用。</strong>每棟建築物限申請一次。如遇收費情形，請即通報本處。</div>
+    </div>
+  </aside>
+
+</div><!-- /page-body -->
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-copy">臺北市建築管理工程處 · 公安一條龍輔導申辦服務</span>
+  <a class="footer-cta"
+     href="https://script.google.com/macros/s/AKfycbwucfo1kocXrxd97vGrAoAaNECpdVVZIPZHCfpl69Ijz8sQihPfDuDs9UeXtyF9cpxuww/exec"
+     target="_blank" rel="noopener">
+    ✏️ 填寫報名資料
+  </a>
+</footer>
+
+<!-- STICKY BAR (mobile only) -->
+<div class="sticky-bar">
+  <a class="sticky-btn"
+     href="https://script.google.com/macros/s/AKfycbwucfo1kocXrxd97vGrAoAaNECpdVVZIPZHCfpl69Ijz8sQihPfDuDs9UeXtyF9cpxuww/exec"
+     target="_blank" rel="noopener">
+    ✏️ 填寫社區報名資料
+  </a>
+</div>
+
+<script>
+// Fade-in on scroll
+(function(){
+  if(!('IntersectionObserver' in window)) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.style.animationPlayState = 'running';
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold: 0.1});
+  document.querySelectorAll('.fadein').forEach(function(el){
+    el.style.animationPlayState = 'paused';
+    io.observe(el);
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>居家公安一條龍</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif;
+    background: #fff;
+    color: #333;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .breadcrumb {
+    padding: 12px 24px;
+    font-size: 13px;
+    color: #555;
+    border-bottom: 1px solid #eee;
+  }
+  .breadcrumb a { color: #555; text-decoration: none; }
+
+  .page-title {
+    text-align: center;
+    padding: 32px 24px 16px;
+  }
+  .page-title h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #222;
+    letter-spacing: 2px;
+  }
+  .page-title .title-underline {
+    width: 80px;
+    height: 3px;
+    background: #2a7ae2;
+    margin: 10px auto 0;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  hr.section-divider {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 0 24px;
+  }
+
+  /* ── 最新消息 ── */
+  .news-section {
+    padding: 28px 0 16px;
+  }
+  .news-section h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #c8a84b;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  /* 🆕 新增：資訊輪動跑馬燈樣式 */
+  .marquee-wrapper {
+    display: flex;
+    align-items: center;
+    background: #fdfaf2;
+    border: 1px solid #f1e5c9;
+    border-radius: 6px;
+    padding: 10px 16px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .marquee-label {
+    background: #c8a84b;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-right: 12px;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(200,168,75,0.2);
+  }
+  .marquee-container {
+    flex-grow: 1;
+    overflow: hidden;
+    position: relative;
+    height: 24px; /* 固定高度以利單行輪播 */
+  }
+  .marquee-content {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 100%;
+    animation: marquee-vertical 12s infinite ease-in-out; /* 垂直輪播動畫 */
+  }
+  /* 滑鼠懸停時暫停輪播，方便民眾點擊超連結 */
+  .marquee-content:hover {
+    animation-play-state: paused;
+  }
+  .marquee-item {
+    height: 24px;
+    line-height: 24px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .marquee-item a {
+    color: #333;
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.2s;
+  }
+  .marquee-item a:hover {
+    color: #2a7ae2;
+    text-decoration: underline;
+  }
+  .marquee-date {
+    color: #888;
+    font-size: 13px;
+    font-weight: normal;
+    margin-right: 8px;
+  }
+
+  /* 跑馬燈垂直位移動畫 (以4筆資料為例，可依實際資料量調整百分比) */
+  @keyframes marquee-vertical {
+    0%, 20% { transform: translateY(0); }
+    25%, 45% { transform: translateY(-24px); }
+    50%, 70% { transform: translateY(-48px); }
+    75%, 95% { transform: translateY(-72px); }
+    100% { transform: translateY(0); }
+  }
+
+  .yt-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .yt-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid #eee;
+  }
+  .yt-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .yt-card-header-text .title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #555;
+  }
+  .yt-card-header-text .sub {
+    font-size: 12px;
+    color: #999;
+  }
+  .yt-embed {
+    position: relative;
+    padding-bottom: 56.25%;
+    background: #000;
+  }
+  .yt-embed iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: none;
+  }
+  .yt-card-footer {
+    padding: 10px 16px;
+    display: flex;
+    justify-content: flex-end;
+    font-size: 13px;
+    color: #888;
+    border-top: 1px solid #eee;
+  }
+
+  /* ── 報名按鈕區 ── */
+  .cta-section {
+    padding: 24px 0 20px;
+    text-align: center;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: #fff;
+    color: #c8a84b;               
+    border: 2px solid #c8a84b;   
+    font-size: 16px;
+    font-weight: 700;
+    padding: 11px 38px;           
+    border-radius: 15px;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: background 0.2s, color 0.2s; 
+  }
+  .cta-btn:hover { 
+    background: #c8a84b;          
+    color: #fff;                  
+  }
+
+/* ── FAQ ── */
+.faq-section {
+  padding: 20px 0;
+}
+.faq-section h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #c8a84b;
+  margin-bottom: 20px;
+}
+.faq-item {
+  border: 1px solid #e8e8e8;
+  border-left: 4px solid #c8a84b;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  background: #fff;
+  overflow: hidden; 
+}
+.faq-q {
+  width: 100%;
+  background: #fff; 
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  padding: 16px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.25s ease; 
+}
+.faq-q-text {
+  font-size: 15px;
+  font-weight: 700;
+  color: #c8a84b;
+  line-height: 1.5;
+  transition: color 0.25s ease; 
+}
+.faq-plus {
+  font-size: 22px;
+  color: #c8a84b;
+  font-weight: 300;
+  flex-shrink: 0;
+  margin-left: 12px;
+  transition: transform 0.25s, color 0.25s; 
+  line-height: 1;
+}
+
+.faq-q:hover {
+  background-color: #c8a84b !important; 
+}
+.faq-q:hover .faq-q-text,
+.faq-q:hover .faq-plus {
+  color: #fff !important; 
+}
+
+.faq-item.open .faq-plus { 
+  transform: rotate(45deg); 
+}
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.25s;
+  font-size: 14px;
+  color: #444;
+  line-height: 1.9;
+  padding: 0 18px;
+  background: #fff; 
+}
+.faq-item.open .faq-a {
+  max-height: 500px;
+  padding: 4px 18px 18px;
+  border-top: 1px solid #eee;
+}
+
+  /* ── 附件下載 ── */
+  .download-section {
+    padding: 28px 0 40px;
+  }
+  .download-section h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #c8a84b;
+    text-align: center;
+    letter-spacing: 4px;
+    margin-bottom: 24px;
+  }
+  .download-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 40px;
+  }
+  .download-link {
+    display: block;
+    color: #333;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.5;
+    padding: 4px 0;
+  }
+  .download-link:hover { text-decoration: underline; color: #0056b3;}
+
+  .page-footer-info {
+    border-top: 1px solid #ddd;
+    padding: 16px 24px;
+    font-size: 12px;
+    color: #888;
+    text-align: center;
+  }
+
+  @media (max-width: 600px) {
+    .download-grid { grid-template-columns: 1fr; }
+    .form-row-2col { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="breadcrumb">
+  ::🏠 <a href="#">首頁</a> &gt; 居家公安一條龍
+</div>
+
+<div class="page-title">
+  <h1>居家公安一條龍</h1>
+  <div class="title-underline"></div>
+</div>
+
+<hr class="section-divider">
+
+<div class="container">
+
+  <div class="news-section">
+    <h2>最新消息</h2>
+
+    <div class="marquee-wrapper">
+      <div class="marquee-label">📢 公告</div>
+      <div class="marquee-container">
+        <div class="marquee-content" id="marqueeContent">
+          <div class="marquee-item"><span class="marquee-date">[05-29]</span><a href="#">歡迎使用居家公安一條龍預約服務，即日起開放線上申請！</a></div>
+          <div class="marquee-item"><span class="marquee-date">[05-20]</span><a href="#">本市8樓以上集合住宅建築物未申報清冊已更新，請市民多加留意。</a></div>
+          <div class="marquee-item"><span class="marquee-date">[05-15]</span><a href="#">建築物公共安全自主檢查表相關資訊宣導說明會開始報名。</a></div>
+          <div class="marquee-item"><span class="marquee-date">[05-01]</span><a href="#">快訊：建物公安申報委託查核機構專區服務電話變更公告。</a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="yt-card">
+      <div class="yt-card-header">
+        <div class="yt-avatar">👤</div>
+        <div class="yt-card-header-text">
+          <div class="title">居家公安一條龍</div>
+          <div class="sub">臺北市建築管理工程處公寓科／使用科</div>
+        </div>
+      </div>
+      <div class="yt-embed">
+        <iframe
+          src="https://www.youtube.com/embed/VIDEO_ID"
+          title="居家公安一條龍"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+      <div class="yt-card-footer">觀看平台：</div>
+    </div>
+  </div>
+
+  <div class="cta-section">
+    <a href="https://script.google.com/macros/s/AKfycbwucfo1kocXrxd97vGrAoAaNECpdVVZIPZHCfpl69Ijz8sQihPfDuDs9UeXtyF9cpxuww/exec" target="_blank" class="cta-btn">📝 預約服務表單</a>
+  </div>
+
+  <div class="faq-section">
+    <h2>常見問題</h2>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">1. 問題一？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">（請填入說明文字）</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">2. 問題二？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">（請填入說明文字）</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">3. 問題三？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">（請填入說明文字）</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">4. 問題四？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">（請填入說明文字）</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">5. 問題五？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">（請填入說明文字）</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">6. 問題六？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">（請填入說明文字）</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">7. 問題七？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">（請填入說明文字）</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">8. 問題八？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">（請填入說明文字）</div>
+    </div>
+  </div>
+
+  <div class="download-section">
+    <h2> 相　關　附　件　下　載</h2>
+    <div class="download-grid">
+      <a class="download-link" href="#">建物公安申報委託查核機構專區</a>
+      <a class="download-link" href="#">建物公共安全自主檢查表相關資訊</a>
+      <a class="download-link" href="#">建築物公共安全申報書表下載</a>
+      <a class="download-link" href="#">本市8樓以上集合住宅建築物未申報清冊</a>
+      <a class="download-link" href="#">建築物公共安全申報政策公告及宣導資訊</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="page-footer-info">
+  點閱數：測試頁面 ｜ 資料更新：115-05-29 14:45 ｜ 資料檢視：115-05-29 14:45 ｜ 資料維護：臺北市建築管理工程處
+</div>
+
+<script>
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+
+// 貼上您剛剛複製的 Google Apps Script 網頁應用程式 URL
+const googleSheetAppUrl = 'https://script.google.com/macros/s/AKfycbxhXJ7NzVzvDuD-QT60zfmhbd9r3jU_z1o2xmMzppKKo4XwiWEck3PHgAROMcjhrxBu2Q/exec';
+
+async function fetchMarqueeData() {
+  try {
+    const response = await fetch(googleSheetAppUrl);
+    const data = await response.json(); 
+    
+    const container = document.getElementById('marqueeContent');
+    if(data && data.length > 0) {
+      container.innerHTML = ''; // 清空預設的靜態測試內容
+      
+      data.forEach(item => {
+        const itemEl = document.createElement('div');
+        itemEl.className = 'marquee-item';
+        itemEl.innerHTML = `<span class="marquee-date">[${item.date}]</span><a href="${item.url}" target="_blank">${item.title}</a>`;
+        container.appendChild(itemEl);
+      });
+      
+      // 動態更新 CSS 動畫，配合實際資料筆數，讓輪播更平滑（每筆停留約3秒）
+      const totalItems = data.length;
+      const animationDuration = totalItems * 3; 
+      container.style.animation = `marquee-vertical ${animationDuration}s infinite ease-in-out`;
+      
+      // 動態產生對應筆數的 CSS Keyframes（選配，若品項固定4筆則用原 CSS 即可）
+      let keyframes = '@keyframes marquee-vertical {';
+      const step = 100 / totalItems;
+      for (let i = 0; i < totalItems; i++) {
+        const startPerc = i * step;
+        const endPerc = (i + 1) * step - 5; // 留 5% 時間做推進過渡
+        const moveY = i * -24;
+        keyframes += `${startPerc}%, ${endPerc}% { transform: translateY(${moveY}px); }`;
+      }
+      keyframes += `100% { transform: translateY(0); } }`;
+      
+      const style = document.createElement('style');
+      style.innerHTML = keyframes;
+      document.head.appendChild(style);
+    }
+  } catch (error) {
+    console.error('無法讀取 Google Sheet 公告資料：', error);
+  }
+}
+
+// 網頁載入完成後自動執行
+window.addEventListener('DOMContentLoaded', fetchMarqueeData);
+</script>
+
+</body>
+</html>
