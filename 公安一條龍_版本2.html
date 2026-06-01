@@ -163,6 +163,19 @@ footer{background:var(--o800);padding:14px max(20px,5vw);display:flex;align-item
 
 /* ─── BOTTOM PADDING for sticky bar ─── */
 @media(max-width:767px){body{padding-bottom:66px}}
+
+/* ─── FAQ ─── */
+.faq-list{display:flex;flex-direction:column;gap:8px;margin-top:0}
+.faq-item{background:var(--surf);border:1.5px solid var(--border);border-radius:var(--r2);overflow:hidden;transition:border-color .2s}
+.faq-item.open{border-color:var(--o300)}
+.faq-item:hover{border-color:var(--o300)}
+.faq-q{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;cursor:pointer;user-select:none;border-left:4px solid var(--o300)}
+.faq-q-text{font-size:14px;font-weight:800;color:var(--ink);line-height:1.5;flex:1}
+.faq-icon{width:28px;height:28px;border-radius:50%;background:var(--o100);color:var(--o700);font-size:18px;font-weight:400;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .25s,background .2s}
+.faq-item.open .faq-icon{transform:rotate(45deg);background:var(--o300);color:#fff}
+.faq-a{font-size:13px;color:var(--ink3);line-height:1.75;padding:0 16px 0 20px;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease}
+.faq-item.open .faq-a{max-height:400px;padding:4px 16px 16px 20px}
+.faq-group-label{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--o700);background:var(--o100);display:inline-block;padding:3px 10px;border-radius:999px;margin:4px 0 8px}
 </style>
 </head>
 <body>
@@ -245,6 +258,16 @@ footer{background:var(--o800);padding:14px max(20px,5vw);display:flex;align-item
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- FAQ -->
+    <div class="fadein fd3">
+      <div class="sec-eye">常見問題</div>
+      <h2 class="sec-title">民眾常見疑問</h2>
+      <p class="sec-sub">點選問題可展開詳細說明。</p>
+      <div class="faq-list" id="faq-list"></div>
     </div>
 
     <div class="divider"></div>
@@ -389,6 +412,66 @@ footer{background:var(--o800);padding:14px max(20px,5vw);display:flex;align-item
     io.observe(el);
   });
 })();
+
+// FAQ — 從 Google Sheet 抓資料
+var FAQ_API = 'https://script.google.com/macros/s/AKfycbxEtqOn4r8ohZv87eyUmDnDO1RLQEPbMeKc5ESKhXCGvKlsc2V1IEnIrmE5MKv9Fcnr/exec';
+
+function buildFaq(data) {
+  var list = document.getElementById('faq-list');
+  if (!list) return;
+  list.innerHTML = '';
+
+  data.forEach(function(group) {
+    if (!group.faqs || group.faqs.length === 0) return;
+
+    // 科室分組標題
+    var label = document.createElement('div');
+    label.className = 'faq-group-label';
+    label.textContent = group.category;
+    list.appendChild(label);
+
+    group.faqs.forEach(function(faq, idx) {
+      var item = document.createElement('div');
+      item.className = 'faq-item';
+      item.innerHTML =
+        '<div class="faq-q">' +
+          '<span class="faq-q-text">' + (idx + 1) + '. ' + faq.q + '</span>' +
+          '<span class="faq-icon">+</span>' +
+        '</div>' +
+        '<div class="faq-a">' + faq.a + '</div>';
+      list.appendChild(item);
+    });
+
+    // 科室之間加分隔線
+    var divider = document.createElement('div');
+    divider.style.cssText = 'height:1px;background:var(--border);margin:8px 0 12px';
+    list.appendChild(divider);
+  });
+
+  // 移除最後多餘的分隔線
+  var dividers = list.querySelectorAll('div[style]');
+  if (dividers.length) dividers[dividers.length - 1].remove();
+
+  // 綁定 accordion 事件
+  list.querySelectorAll('.faq-q').forEach(function(q) {
+    q.addEventListener('click', function() {
+      var item = q.closest('.faq-item');
+      var isOpen = item.classList.contains('open');
+      list.querySelectorAll('.faq-item.open').forEach(function(i) { i.classList.remove('open'); });
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+}
+
+function showFaqError() {
+  var list = document.getElementById('faq-list');
+  if (list) list.innerHTML = '<p style="font-size:13px;color:var(--ink3);padding:12px 0">目前無法載入常見問題，請稍後再試。</p>';
+}
+
+fetch(FAQ_API)
+  .then(function(res) { return res.json(); })
+  .then(function(data) { buildFaq(data); })
+  .catch(function() { showFaqError(); });
 </script>
 </body>
 </html>
