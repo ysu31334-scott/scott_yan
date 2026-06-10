@@ -193,4 +193,478 @@
   /* ── 報名按鈕區 ── */
   .cta-section {
     padding: 24px 0 20px;
-    text
+    text-align: center;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: #fff;
+    color: #c8a84b;                
+    border: 2px solid #c8a84b;   
+    font-size: 16px;
+    font-weight: 700;
+    padding: 11px 38px;           
+    border-radius: 15px;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: background 0.2s, color 0.2s; 
+  }
+  .cta-btn:hover { 
+    background: #c8a84b;          
+    color: #fff;                  
+  }
+
+/* ── FAQ ── */
+.faq-section {
+  padding: 20px 0;
+}
+.faq-section h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #c8a84b;
+  margin-bottom: 20px;
+}
+.faq-category-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+  margin: 24px 0 12px;
+  padding-left: 8px;
+  border-left: 4px solid #2a7ae2;
+}
+.faq-item {
+  border: 1px solid #e8e8e8;
+  border-left: 4px solid #c8a84b;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  background: #fff;
+  overflow: hidden; 
+}
+.faq-q {
+  width: 100%;
+  background: #fff; 
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  padding: 16px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.25s ease; 
+}
+.faq-q-text {
+  font-size: 15px;
+  font-weight: 700;
+  color: #c8a84b;
+  line-height: 1.5;
+  transition: color 0.25s ease; 
+}
+.faq-plus {
+  font-size: 22px;
+  color: #c8a84b;
+  font-weight: 300;
+  flex-shrink: 0;
+  margin-left: 12px;
+  transition: transform 0.25s, color 0.25s; 
+  line-height: 1;
+}
+
+.faq-q:hover {
+  background-color: #c8a84b !important; 
+}
+.faq-q:hover .faq-q-text,
+.faq-q:hover .faq-plus {
+  color: #fff !important; 
+}
+
+.faq-item.open .faq-plus { 
+  transform: rotate(45deg); 
+}
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.25s;
+  font-size: 14px;
+  color: #444;
+  line-height: 1.9;
+  padding: 0 18px;
+  background: #fff; 
+}
+.faq-item.open .faq-a {
+  max-height: 600px; /* 調大以包容較長段落 */
+  padding: 12px 18px 18px;
+  border-top: 1px solid #eee;
+}
+
+  /* ── 附件下載 ── */
+  .download-section {
+    padding: 28px 0 40px;
+  }
+  .download-section h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #c8a84b;
+    text-align: center;
+    letter-spacing: 4px;
+    margin-bottom: 24px;
+  }
+  .download-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 40px;
+  }
+  .download-link {
+    display: block;
+    color: #333;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.5;
+    padding: 4px 0;
+  }
+  .download-link:hover { text-decoration: underline; color: #0056b3;}
+
+  .page-footer-info {
+    border-top: 1px solid #ddd;
+    padding: 16px 24px;
+    font-size: 12px;
+    color: #888;
+    text-align: center;
+  }
+
+  @media (max-width: 600px) {
+    .download-grid { grid-template-columns: 1fr; }
+    .form-row-2col { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="breadcrumb">
+  ::🏠 <a href="#">首頁</a> &gt; 居家公安一條龍
+</div>
+
+<div class="page-title">
+  <h1>居家公安一條龍</h1>
+  <div class="title-underline"></div>
+</div>
+
+<hr class="section-divider">
+
+<div class="container">
+
+  <div class="news-section">
+    <h2>最新消息</h2>
+
+    <div class="marquee-wrapper">
+      <div class="marquee-label">📢 公告</div>
+      <div class="marquee-container">
+        <div class="marquee-content" id="marqueeContent">
+          <div class="marquee-item"><span class="marquee-date">[05-29]</span><a href="#">歡迎使用居家公安一條龍預約服務，即日起開放線上申請！</a></div>
+          <div class="marquee-item"><span class="marquee-date">[05-20]</span><a href="#">本市8樓以上集合住宅建築物未申報清冊已更新，請市民多加留意。</a></div>
+          <div class="marquee-item"><span class="marquee-date">[05-15]</span><a href="#">建築物公共安全自主檢查表相關資訊宣導說明會開始報名。</a></div>
+          <div class="marquee-item"><span class="marquee-date">[05-01]</span><a href="#">快訊：建物公安申報委託查核機構專區服務電話變更公告。</a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="yt-card">
+      <div class="yt-card-header">
+        <div class="yt-avatar">👤</div>
+        <div class="yt-card-header-text">
+          <div class="title">居家公安一條龍</div>
+          <div class="sub">臺北市建築管理工程處公寓科／使用科</div>
+        </div>
+      </div>
+      <div class="yt-embed">
+        <iframe
+          src="https://www.youtube.com/embed/A9eH3_DNaUI"
+          title="居家公安一條龍"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+      <div class="yt-card-footer">觀看平台：</div>
+    </div>
+  </div>
+
+  <div class="cta-section">
+    <a href="https://script.google.com/macros/s/AKfycbwucfo1kocXrxd97vGrAoAaNECpdVVZIPZHCfpl69Ijz8sQihPfDuDs9UeXtyF9cpxuww/exec" target="_blank" class="cta-btn">📝 預約服務表單</a>
+  </div>
+
+  <div class="faq-section">
+    <h2>常見問題</h2>
+
+    <div class="faq-category-title">成立管理委員會 & 共用部分補助部分</div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">1. 請問我們的社區有資格申請這個補助嗎？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">
+        只要您的建築物符合以下三個條件，即可提出申請：<br>
+        1. 建築物於民國92年12月31日以前領得使用執照。<br>
+        2. 社區已依《公寓大廈管理條例》成立管理委員會或推選管理負責人。<br>
+        3. 該管理組織已向都市發展局完成管理組織報備。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">2. 115年度的補助什麼時候開放申請？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">
+        本計畫採取「兩階段」開放申請，並以建築管理工程處（建管處）總收文掛號日期為準：<br>
+        ● 第一階段（115年6月1日至115年6月30日）： 僅受理民國92年以前領得使照、6樓以上，且「首次」成立管理組織並完成報備的公寓大廈。<br>
+        ● 第二階段（115年9月1日至115年9月30日）： 受理所有民國92年以前領得使照，並已完成管理組織報備的公寓大廈。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">3. 什麼時候完成的修繕工程才可以申請115年度的補助？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">
+        只要是在民國114年11月1日起完成的補助項目維護修繕，且在115年度公告的受理期間內送件，都符合申請資格。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">4. 請問我們社區最高可以申請到多少補助？費用是全額補助嗎？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">
+        不是全額補助。每一公寓大廈的總補助金額設有上限，且各補助項目皆有其「補助比例上限」與「單項金額上限」，必須同時符合，其餘費用由社區自籌。其總補助金額上限，依是否為首次成立管理組織而有不同：<br>
+        ● 「首次」成立管理組織者： 總補助金額上限為新臺幣 138萬元。<br>
+        ● 「非首次」成立管理組織者（如已成立多年的管委會）： 總補助金額上限為新臺幣 80萬元。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">5. 申請補助需要準備哪些文件？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">
+        管理委員會或管理負責人需檢附以下文件向建管處提出申請：<br>
+        1. 申請書及領據。<br>
+        2. 公寓大廈管理組織報備證明文件影本。<br>
+        3. 區分所有權人會議（區大）或管理委員會會議紀錄影本。<br>
+        4. 建築物使用執照影本。<br>
+        5. 維護修繕成果（必須包含改善前、改善後之對照照片）。<br>
+        6. 修繕廠商開立給社區的統一發票正本或收據正本，且必須詳列施作項目之計價單。<br>
+        7. 申請撥付之金融帳戶封面影本。<br>
+        8. 公共安全申報證明文件（僅限依法需要辦理公安申報的建築物）。<br>
+        9. 其他相關證明文件及計畫書表。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">6. 發票抬頭應該怎麼開？可以用估價單申請嗎？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">
+        發票或收據正本的抬頭必須是該公寓大廈管理委員會或管理負責人。絕對不能用估價單申請，必須是工程完工後，廠商真正開立的統一發票正本或收據正本，並附上詳細的計價明細單。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">7. 審查通過後，我們交上去的發票正本可以退還給社區做財務報銷嗎？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">
+        不可以。申請案只要經建管處審查核准並撥款補助後，社區所遞交的原申請資料、統一發票及收據正本，都必須留存於建管處依法歸檔留存，無法退還。社區如需留底，請於送件前自行影印留存。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">8. 我們社區一定要成立管委會嗎？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">
+        是的。依《公寓大廈管理條例》第 29 條，公寓大廈應成立管理委員會，或推選管理負責人，負責辦理公共事務、維護住戶共同權益。若主管機關認定社區有公安、消防或管理維護危險疑慮，區分所有權人須在期限內完成組織成立及報備。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">9. 管理組織有哪幾種形式？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">
+        主要分兩種：<br>
+        ● 管理委員會：由區分所有權人選任若干管理委員組成，適合規模較大的社區。<br>
+        ● 管理負責人：由區分所有權人推選一位住戶擔任，適合規模較小的社區。<br>
+        兩者皆屬合法管理組織，可依社區實際狀況選擇。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">10. 主任委員要負責社區所有事嗎？沒有人願意當怎麼辦？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">
+        不用擔心。主任委員是由管理委員互推一人產生，對外代表管理委員會，但社區重要事項仍由全體區分所有權人會議決議、管理委員會共同執行，並非主任委員一人扛下全部責任。依法分工反而能降低爭議、提升管理效率。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">11. 區分所有權人會議一直開不成怎麼辦？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">
+        依「公寓大廈管理條例」第 32 條，若第一次會議出席人數未達門檻，召集人得就同一議案重新召集。重新召開時，出席門檻可依規定放寬（至少須有區分所有權人 3 人且達 1/5 以上，及其區分所有權比例合計 1/5 以上）。
+      </div>
+    </div>
+
+    <div class="faq-category-title">公安申報部分</div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">12. 家門口為什麼被張貼公安申報海報？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">
+        通知 6–7 樓建築物自 114 年起應辦理公安申報作業。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">13. 該怎麼申報？申報期限到什麼時候？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">
+        應委託內政部認可專業檢查機構或人員檢查簽證，由檢查人將檢查結果向市政府申報。目前仍為輔導期，請民眾儘速完成申報。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">14. 要去哪裡找檢查人？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">
+        1. 可至內政部 <a href="https://cloudbm.nlma.gov.tw/CPTL/cpt0602m.do" target="_blank">「全國建築管理資訊系統入口網」</a> 查詢（類別選擇：建築物公共安全標準檢查機構，地區不限制，輸入查詢驗證碼後即可直接查詢）。<br>
+        2. 參考 <a href="https://www-ws.gov.taipei/001/Upload/845/relfile/-1/845/fa03bf82-a05d-4578-b7e1-af5bc905bfe1.pdf" target="_blank">「受理臺北市建築物公共安全檢查申報」標準檢查專業機構或專業人員名冊</a>。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">15. 一定要成立管委會才能申報嗎？沒有管委會怎麼申報？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">
+        沒有管委會也須申報，可由建築物所有權人或使用人推派代表代為申報。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">16. 申報所需資料有哪些？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">
+        需準備「建築物使用執照竣工圖」及共用部分三個月內申請之「建物登記謄本」或「所有權狀影本」。<br>
+        「建築物使用執照竣工圖」相關資料請至 <a href="https://cmo.gov.taipei/cp.aspx?n=6830246B4DCA0E64" target="_blank">本處資訊室</a> 申請，共用部分三個月內「建物登記謄本」或「所有權狀影本」請至各地政事務所申請。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">17. 詳細申報作業可以在哪諮詢？</span>
+        <span class="faq-plus">+</span>
+      </button>
+      <div class="faq-a">
+        可洽下列公告指定之查核機構：<br>
+        1. 臺北市建築師公會 電話：02-23773011
+      </div>
+    </div>
+
+  </div>
+
+  <div class="download-section">
+    <h2> 相 關 附 件 下 載</h2>
+    <div class="download-grid">
+      <a class="download-link" href="#">建物公安申報委託查核機構專區</a>
+      <a class="download-link" href="#">建物公共安全自主檢查表相關資訊</a>
+      <a class="download-link" href="#">建築物公共安全申報書表下載</a>
+      <a class="download-link" href="#">本市8樓以上集合住宅建築物未申報清冊</a>
+      <a class="download-link" href="#">建築物公共安全申報政策公告及宣導資訊</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="page-footer-info">
+  點閱數：測試頁面 ｜ 資料更新：115-05-29 14:45 ｜ 資料檢視：115-05-29 14:45 ｜ 資料維護：臺北市建築管理工程處
+</div>
+
+<script>
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+
+// 貼上您剛剛複製的 Google Apps Script 網頁應用程式 URL
+const googleSheetAppUrl = 'https://script.google.com/macros/s/AKfycbxhXJ7NzVzvDuD-QT60zfmhbd9r3jU_z1o2xmMzppKKo4XwiWEck3PHgAROMcjhrxBu2Q/exec';
+
+async function fetchMarqueeData() {
+  try {
+    const response = await fetch(googleSheetAppUrl);
+    const data = await response.json(); 
+    
+    const container = document.getElementById('marqueeContent');
+    if(data && data.length > 0) {
+      container.innerHTML = ''; // 清空預設的靜態測試內容
+      
+      data.forEach(item => {
+        const itemEl = document.createElement('div');
+        itemEl.className = 'marquee-item';
+        itemEl.innerHTML = `<span class="marquee-date">[${item.date}]</span><a href="${item.url}" target="_blank">${item.title}</a>`;
+        container.appendChild(itemEl);
+      });
+      
+      // 動態更新 CSS 動畫，配合實際資料筆數，讓輪播更平滑（每筆停留約3秒）
+      const totalItems = data.length;
+      const animationDuration = totalItems * 3; 
+      container.style.animation = `marquee-vertical ${animationDuration}s infinite ease-in-out`;
+      
+      // 動態產生對應筆數的 CSS Keyframes（選配，若品項固定4筆則用原 CSS 即可）
+      let keyframes = '@keyframes marquee-vertical {';
+      const step = 100 / totalItems;
+      for (let i = 0; i < totalItems; i++) {
+        const startPerc = i * step;
+        const endPerc = (i + 1) * step - 5; // 留 5% 時間做推進過渡
+        const moveY = i * -24;
+        keyframes += `${startPerc}%, ${endPerc}% { transform: translateY(${moveY}px); }`;
+      }
+      keyframes += `100% { transform: translateY(0); } }`;
+      
+      const style = document.createElement('style');
+      style.innerHTML = keyframes;
+      document.head.appendChild(style);
+    }
+  } catch (error) {
+    console.error('無法讀取 Google Sheet 公告資料：', error);
+  }
+}
+
+// 網頁載入完成後自動執行
+window.addEventListener('DOMContentLoaded', fetchMarqueeData);
+</script>
+
+</body>
+</html>
