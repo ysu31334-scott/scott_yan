@@ -65,7 +65,6 @@
     border-bottom: 1px solid #ddd;
   }
 
-  /* 🆕 新增：資訊輪動跑馬燈樣式 */
   .marquee-wrapper {
     display: flex;
     align-items: center;
@@ -91,16 +90,15 @@
     flex-grow: 1;
     overflow: hidden;
     position: relative;
-    height: 24px; /* 固定高度以利單行輪播 */
+    height: 24px;
   }
   .marquee-content {
     display: flex;
     flex-direction: column;
     position: absolute;
     width: 100%;
-    animation: marquee-vertical 12s infinite ease-in-out; /* 垂直輪播動畫 */
+    animation: marquee-vertical 12s infinite ease-in-out;
   }
-  /* 滑鼠懸停時暫停輪播，方便民眾點擊超連結 */
   .marquee-content:hover {
     animation-play-state: paused;
   }
@@ -128,7 +126,6 @@
     margin-right: 8px;
   }
 
-  /* 跑馬燈垂直位移動畫 (以4筆資料為例，可依實際資料量調整百分比) */
   @keyframes marquee-vertical {
     0%, 20% { transform: translateY(0); }
     25%, 45% { transform: translateY(-24px); }
@@ -290,7 +287,7 @@
   background: #fff; 
 }
 .faq-item.open .faq-a {
-  max-height: 600px; /* 調大以包容較長段落 */
+  max-height: 600px;
   padding: 12px 18px 18px;
   border-top: 1px solid #eee;
 }
@@ -336,6 +333,71 @@
     .form-row-2col { grid-template-columns: 1fr; }
   }
 </style>
+<script>
+// 使用事件監聽器確保 DOM 載入後才執行，避免阻塞渲染
+document.addEventListener('DOMContentLoaded', () => {
+  
+  // 1. FAQ 點擊邏輯委派（安全機制：不直接在 HTML 寫 onclick）
+  const faqSection = document.querySelector('.faq-section');
+  if (faqSection) {
+    faqSection.addEventListener('click', (e) => {
+      const btn = e.target.closest('.faq-q');
+      if (!btn) return;
+      
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      
+      document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  }
+
+  // 2. 跑馬燈非同步資料同步
+  const googleSheetAppUrl = 'https://script.google.com/macros/s/AKfycbxhXJ7NzVzvDuD-QT60zfmhbd9r3jU_z1o2xmMzppKKo4XwiWEck3PHgAROMcjhrxBu2Q/exec';
+  
+  async function fetchMarqueeData() {
+    try {
+      const response = await fetch(googleSheetAppUrl);
+      if (!response.ok) throw new Error('網路回應不正確');
+      const data = await response.json(); 
+      
+      const container = document.getElementById('marqueeContent');
+      if(data && data.length > 0 && container) {
+        container.innerHTML = ''; 
+        
+        data.forEach(item => {
+          const itemEl = document.createElement('div');
+          itemEl.className = 'marquee-item';
+          itemEl.innerHTML = `<span class="marquee-date">[${item.date}]</span><a href="${item.url}" target="_blank">${item.title}</a>`;
+          container.appendChild(itemEl);
+        });
+        
+        const totalItems = data.length;
+        const animationDuration = totalItems * 3; 
+        container.style.animation = `marquee-vertical ${animationDuration}s infinite ease-in-out`;
+        
+        let keyframes = '@keyframes marquee-vertical {';
+        const step = 100 / totalItems;
+        for (let i = 0; i < totalItems; i++) {
+          const startPerc = i * step;
+          const endPerc = (i + 1) * step - 5;
+          const moveY = i * -24;
+          keyframes += `${startPerc}%, ${endPerc}% { transform: translateY(${moveY}px); }`;
+        }
+        keyframes += `100% { transform: translateY(0); } }`;
+        
+        const style = document.createElement('style');
+        style.innerHTML = keyframes;
+        document.head.appendChild(style);
+      }
+    } catch (error) {
+      console.error('無法讀取 Google Sheet 公告資料，保留預設靜態內容。錯誤訊息：', error);
+    }
+  }
+
+  fetchMarqueeData();
+});
+</script>
 </head>
 <body>
 
@@ -397,7 +459,7 @@
     <div class="faq-category-title">成立管理委員會 & 共用部分補助部分</div>
 
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
+      <button class="faq-q">
         <span class="faq-q-text">1. 請問我們的社區有資格申請這個補助嗎？</span>
         <span class="faq-plus">+</span>
       </button>
@@ -410,7 +472,7 @@
     </div>
 
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
+      <button class="faq-q">
         <span class="faq-q-text">2. 115年度的補助什麼時候開放申請？</span>
         <span class="faq-plus">+</span>
       </button>
@@ -422,7 +484,7 @@
     </div>
 
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
+      <button class="faq-q">
         <span class="faq-q-text">3. 什麼時候完成的修繕工程才可以申請115年度的補助？</span>
         <span class="faq-plus">+</span>
       </button>
@@ -432,7 +494,7 @@
     </div>
 
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
+      <button class="faq-q">
         <span class="faq-q-text">4. 請問我們社區最高可以申請到多少補助？費用是全額補助嗎？</span>
         <span class="faq-plus">+</span>
       </button>
@@ -444,7 +506,7 @@
     </div>
 
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
+      <button class="faq-q">
         <span class="faq-q-text">5. 申請補助需要準備哪些文件？</span>
         <span class="faq-plus">+</span>
       </button>
@@ -463,7 +525,7 @@
     </div>
 
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
+      <button class="faq-q">
         <span class="faq-q-text">6. 發票抬頭應該怎麼開？可以用估價單申請嗎？</span>
         <span class="faq-plus">+</span>
       </button>
@@ -473,7 +535,7 @@
     </div>
 
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
+      <button class="faq-q">
         <span class="faq-q-text">7. 審查通過後，我們交上去的發票正本可以退還給社區做財務報銷嗎？</span>
         <span class="faq-plus">+</span>
       </button>
@@ -483,7 +545,7 @@
     </div>
 
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
+      <button class="faq-q">
         <span class="faq-q-text">8. 我們社區一定要成立管委會嗎？</span>
         <span class="faq-plus">+</span>
       </button>
@@ -493,7 +555,7 @@
     </div>
 
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
+      <button class="faq-q">
         <span class="faq-q-text">9. 管理組織有哪幾種形式？</span>
         <span class="faq-plus">+</span>
       </button>
@@ -506,7 +568,7 @@
     </div>
 
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
+      <button class="faq-q">
         <span class="faq-q-text">10. 主任委員要負責社區所有事嗎？沒有人願意當怎麼辦？</span>
         <span class="faq-plus">+</span>
       </button>
@@ -516,7 +578,7 @@
     </div>
 
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
+      <button class="faq-q">
         <span class="faq-q-text">11. 區分所有權人會議一直開不成怎麼辦？</span>
         <span class="faq-plus">+</span>
       </button>
@@ -528,7 +590,7 @@
     <div class="faq-category-title">公安申報部分</div>
 
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
+      <button class="faq-q">
         <span class="faq-q-text">12. 家門口為什麼被張貼公安申報海報？</span>
         <span class="faq-plus">+</span>
       </button>
@@ -538,7 +600,7 @@
     </div>
 
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
+      <button class="faq-q">
         <span class="faq-q-text">13. 該怎麼申報？申報期限到什麼時候？</span>
         <span class="faq-plus">+</span>
       </button>
@@ -548,7 +610,7 @@
     </div>
 
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
+      <button class="faq-q">
         <span class="faq-q-text">14. 要去哪裡找檢查人？</span>
         <span class="faq-plus">+</span>
       </button>
@@ -559,7 +621,7 @@
     </div>
 
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
+      <button class="faq-q">
         <span class="faq-q-text">15. 一定要成立管委會才能申報嗎？沒有管委會怎麼申報？</span>
         <span class="faq-plus">+</span>
       </button>
@@ -569,7 +631,7 @@
     </div>
 
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
+      <button class="faq-q">
         <span class="faq-q-text">16. 申報所需資料有哪些？</span>
         <span class="faq-plus">+</span>
       </button>
@@ -580,7 +642,7 @@
     </div>
 
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
+      <button class="faq-q">
         <span class="faq-q-text">17. 詳細申報作業可以在哪諮詢？</span>
         <span class="faq-plus">+</span>
       </button>
@@ -608,63 +670,6 @@
 <div class="page-footer-info">
   點閱數：測試頁面 ｜ 資料更新：115-05-29 14:45 ｜ 資料檢視：115-05-29 14:45 ｜ 資料維護：臺北市建築管理工程處
 </div>
-
-<script>
-function toggleFaq(btn) {
-  const item = btn.closest('.faq-item');
-  const isOpen = item.classList.contains('open');
-  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
-  if (!isOpen) item.classList.add('open');
-}
-
-
-// 貼上您剛剛複製的 Google Apps Script 網頁應用程式 URL
-const googleSheetAppUrl = 'https://script.google.com/macros/s/AKfycbxhXJ7NzVzvDuD-QT60zfmhbd9r3jU_z1o2xmMzppKKo4XwiWEck3PHgAROMcjhrxBu2Q/exec';
-
-async function fetchMarqueeData() {
-  try {
-    const response = await fetch(googleSheetAppUrl);
-    const data = await response.json(); 
-    
-    const container = document.getElementById('marqueeContent');
-    if(data && data.length > 0) {
-      container.innerHTML = ''; // 清空預設的靜態測試內容
-      
-      data.forEach(item => {
-        const itemEl = document.createElement('div');
-        itemEl.className = 'marquee-item';
-        itemEl.innerHTML = `<span class="marquee-date">[${item.date}]</span><a href="${item.url}" target="_blank">${item.title}</a>`;
-        container.appendChild(itemEl);
-      });
-      
-      // 動態更新 CSS 動畫，配合實際資料筆數，讓輪播更平滑（每筆停留約3秒）
-      const totalItems = data.length;
-      const animationDuration = totalItems * 3; 
-      container.style.animation = `marquee-vertical ${animationDuration}s infinite ease-in-out`;
-      
-      // 動態產生對應筆數的 CSS Keyframes（選配，若品項固定4筆則用原 CSS 即可）
-      let keyframes = '@keyframes marquee-vertical {';
-      const step = 100 / totalItems;
-      for (let i = 0; i < totalItems; i++) {
-        const startPerc = i * step;
-        const endPerc = (i + 1) * step - 5; // 留 5% 時間做推進過渡
-        const moveY = i * -24;
-        keyframes += `${startPerc}%, ${endPerc}% { transform: translateY(${moveY}px); }`;
-      }
-      keyframes += `100% { transform: translateY(0); } }`;
-      
-      const style = document.createElement('style');
-      style.innerHTML = keyframes;
-      document.head.appendChild(style);
-    }
-  } catch (error) {
-    console.error('無法讀取 Google Sheet 公告資料：', error);
-  }
-}
-
-// 網頁載入完成後自動執行
-window.addEventListener('DOMContentLoaded', fetchMarqueeData);
-</script>
 
 </body>
 </html>
