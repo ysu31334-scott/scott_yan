@@ -49,9 +49,15 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--ink)
 .hero-title{font-family:'Noto Serif TC',serif;font-size:clamp(28px,5vw,42px);font-weight:900;color:#fff;line-height:1.18;margin-bottom:10px}
 .hero-title em{font-style:normal;color:var(--gold)}
 .hero-sub{font-size:clamp(13px,2vw,15px);color:rgba(255,255,255,.72);line-height:1.8;margin-bottom:20px}
-.hero-cta{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--o800);border:none;border-radius:var(--r2);height:50px;padding:0 28px;font-size:15px;font-weight:900;font-family:inherit;cursor:pointer;text-decoration:none;transition:background .15s}
-.hero-cta:hover{background:#e8b820}
-.hero-cta:active{background:#d4a51e}
+@keyframes pulse-ring{
+  0%{box-shadow:0 0 0 0 rgba(245,200,66,.55)}
+  70%{box-shadow:0 0 0 14px rgba(245,200,66,0)}
+  100%{box-shadow:0 0 0 0 rgba(245,200,66,0)}
+}
+.hero-cta{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--o800);border:none;border-radius:20px;height:58px;padding:0 36px;font-size:17px;font-weight:900;font-family:inherit;cursor:pointer;text-decoration:none;transition:background .15s;animation:pulse-ring 2.2s ease-out infinite}
+.hero-cta:hover{background:#e8b820;animation:none}
+.hero-cta:active{background:#d4a51e;animation:none}
+@media(prefers-reduced-motion:reduce){.hero-cta{animation:none}}
 
 .subsidy-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .s-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:var(--r2);padding:clamp(14px,3vw,20px)}
@@ -165,8 +171,30 @@ footer{background:var(--o800);padding:14px max(20px,5vw);display:flex;align-item
 @media(max-width:767px){body{padding-bottom:66px}}
 
 /* ─── FAQ ─── */
-.faq-list{display:flex;flex-direction:column;gap:8px;margin-top:0}
-.faq-item{background:var(--surf);border:1.5px solid var(--border);border-radius:var(--r2);overflow:hidden;transition:border-color .2s}
+.faq-wrap{background:var(--surf);border-radius:var(--r2);border:1.5px solid var(--border);overflow:hidden;margin-top:0}
+
+/* 下拉選單（手機） */
+.faq-select-wrap{display:block;position:relative;margin-bottom:14px}
+.faq-select-wrap::after{content:'▾';position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--o700);pointer-events:none}
+.faq-select{width:100%;height:46px;padding:0 36px 0 14px;font-size:14px;font-weight:700;color:var(--ink);background:var(--surf);border:2px solid var(--o300);border-radius:var(--r2);appearance:none;-webkit-appearance:none;cursor:pointer;font-family:inherit}
+.faq-select:focus{outline:none;border-color:var(--o700)}
+
+/* 頁簽列（桌機） */
+.tab-bar{display:none;border-bottom:2px solid var(--border);background:var(--o50)}
+.tab-btn{flex:1;padding:12px 8px;font-size:13px;font-weight:700;color:var(--ink3);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:color .15s,border-color .15s;font-family:inherit}
+.tab-btn.active{color:var(--o800);border-bottom-color:var(--o500);background:#fff}
+.tab-btn:hover:not(.active){color:var(--ink2)}
+
+@media(min-width:600px){
+  .faq-select-wrap{display:none}
+  .tab-bar{display:flex}
+}
+
+/* panel 共用 */
+.faq-panel{display:none;padding:12px 0 4px}
+.faq-panel.active{display:block}
+.faq-list{display:flex;flex-direction:column;gap:8px;margin-top:0;padding:0}
+.faq-item{background:var(--surf);border:1.5px solid var(--border);border-radius:var(--r2);overflow:hidden;transition:border-color .2s;margin:0 12px}
 .faq-item.open{border-color:var(--o300)}
 .faq-item:hover{border-color:var(--o300)}
 .faq-q{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;cursor:pointer;user-select:none;border-left:4px solid var(--o300)}
@@ -277,13 +305,45 @@ footer{background:var(--o800);padding:14px max(20px,5vw);display:flex;align-item
     <div class="fadein fd3">
       <div class="sec-eye">常見問題</div>
       <h2 class="sec-title">民眾常見疑問</h2>
-      <p class="sec-sub">點選問題可展開詳細說明。</p>
-      <div class="faq-list" id="faq-list">
-        <div class="faq-loading">
-          <span class="faq-loading-dot"></span>
-          <span class="faq-loading-dot"></span>
-          <span class="faq-loading-dot"></span>
-          <span style="font-size:13px;color:var(--ink3);margin-left:8px">載入中，請稍候…</span>
+      <p class="sec-sub">選擇分類後展開問題查看說明。</p>
+
+      <!-- 手機：下拉選單 -->
+      <div class="faq-select-wrap">
+        <select class="faq-select" id="faq-select" onchange="faqSelectSwitch(this.value)">
+          <option value="0">🏘️ 公寓大廈科</option>
+          <option value="1">🛡️ 使用科</option>
+        </select>
+      </div>
+
+      <div class="faq-wrap">
+        <!-- 桌機：頁簽列 -->
+        <div class="tab-bar">
+          <button class="tab-btn active" onclick="faqTabSwitch(0)">🏘️ 公寓大廈科</button>
+          <button class="tab-btn" onclick="faqTabSwitch(1)">🛡️ 使用科</button>
+        </div>
+
+        <!-- panel 0 -->
+        <div class="faq-panel active" id="faq-panel-0">
+          <div class="faq-list" id="faq-list-0">
+            <div class="faq-loading">
+              <span class="faq-loading-dot"></span>
+              <span class="faq-loading-dot"></span>
+              <span class="faq-loading-dot"></span>
+              <span style="font-size:13px;color:var(--ink3);margin-left:8px">載入中，請稍候…</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- panel 1 -->
+        <div class="faq-panel" id="faq-panel-1">
+          <div class="faq-list" id="faq-list-1">
+            <div class="faq-loading">
+              <span class="faq-loading-dot"></span>
+              <span class="faq-loading-dot"></span>
+              <span class="faq-loading-dot"></span>
+              <span style="font-size:13px;color:var(--ink3);margin-left:8px">載入中，請稍候…</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -453,63 +513,77 @@ function formatAnswer(text) {
       if (inList) { html += '</ul>'; inList = false; }
       html += '<p class="faq-p">' + line + '</p>';
     }
-
   });
 
   if (inList) html += '</ul>';
   return html;
 }
 
-function buildFaq(data) {
-  var list = document.getElementById('faq-list');
-  if (!list) return;
-  list.innerHTML = '';
-
-  data.forEach(function(group) {
-    if (!group.faqs || group.faqs.length === 0) return;
-
-    // 科室分組標題
-    var label = document.createElement('div');
-    label.className = 'faq-group-label';
-    label.textContent = group.category;
-    list.appendChild(label);
-
-    group.faqs.forEach(function(faq, idx) {
-      var item = document.createElement('div');
-      item.className = 'faq-item';
-      item.innerHTML =
-        '<div class="faq-q">' +
-          '<span class="faq-q-text">' + (idx + 1) + '. ' + faq.q + '</span>' +
-          '<span class="faq-icon">+</span>' +
-        '</div>' +
-        '<div class="faq-a">' + formatAnswer(faq.a) + '</div>';
-      list.appendChild(item);
-    });
-
-    // 科室之間加分隔線
-    var divider = document.createElement('div');
-    divider.style.cssText = 'height:1px;background:var(--border);margin:8px 0 12px';
-    list.appendChild(divider);
+function buildFaqList(listEl, faqs) {
+  listEl.innerHTML = '';
+  faqs.forEach(function(faq, idx) {
+    var item = document.createElement('div');
+    item.className = 'faq-item';
+    item.innerHTML =
+      '<div class="faq-q">' +
+        '<span class="faq-q-text">' + (idx + 1) + '. ' + faq.q + '</span>' +
+        '<span class="faq-icon">+</span>' +
+      '</div>' +
+      '<div class="faq-a">' + formatAnswer(faq.a) + '</div>';
+    listEl.appendChild(item);
   });
 
-  // 移除最後多餘的分隔線
-  var dividers = list.querySelectorAll('div[style]');
-  if (dividers.length) dividers[dividers.length - 1].remove();
-
-  // 綁定 accordion 事件
-  list.querySelectorAll('.faq-q').forEach(function(q) {
+  listEl.querySelectorAll('.faq-q').forEach(function(q) {
     q.addEventListener('click', function() {
       var item = q.closest('.faq-item');
       var isOpen = item.classList.contains('open');
-      list.querySelectorAll('.faq-item.open').forEach(function(i) { i.classList.remove('open'); });
+      listEl.querySelectorAll('.faq-item.open').forEach(function(i) { i.classList.remove('open'); });
       if (!isOpen) item.classList.add('open');
     });
   });
 }
 
+function buildFaq(data) {
+  // data 是依 category 分組的陣列，對應兩個 panel
+  data.forEach(function(group, idx) {
+    var listEl = document.getElementById('faq-list-' + idx);
+    if (!listEl || !group.faqs || group.faqs.length === 0) return;
+    buildFaqList(listEl, group.faqs);
+
+    // 同步更新 select option 文字（保留 emoji）
+    var sel = document.getElementById('faq-select');
+    if (sel && sel.options[idx]) {
+      var emoji = idx === 0 ? '🏘️' : '🛡️';
+      sel.options[idx].text = emoji + ' ' + group.category;
+    }
+
+    // 同步更新 tab btn 文字
+    var tabs = document.querySelectorAll('.tab-btn');
+    if (tabs[idx]) {
+      var emoji2 = idx === 0 ? '🏘️' : '🛡️';
+      tabs[idx].textContent = emoji2 + ' ' + group.category;
+    }
+  });
+}
+
 function showFaqError() {
-  var list = document.getElementById('faq-list');
-  if (list) list.innerHTML = '<p style="font-size:13px;color:var(--ink3);padding:12px 0">目前無法載入常見問題，請稍後再試。</p>';
+  ['faq-list-0','faq-list-1'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.innerHTML = '<p style="font-size:13px;color:var(--ink3);padding:12px 14px">目前無法載入常見問題，請稍後再試。</p>';
+  });
+}
+
+// 頁簽切換（桌機）
+function faqTabSwitch(idx) {
+  document.querySelectorAll('.tab-btn').forEach(function(b, i) { b.classList.toggle('active', i === idx); });
+  document.querySelectorAll('.faq-panel').forEach(function(p, i) { p.classList.toggle('active', i === idx); });
+  document.getElementById('faq-select').value = idx;
+}
+
+// 下拉切換（手機）
+function faqSelectSwitch(idx) {
+  document.querySelectorAll('.faq-panel').forEach(function(p, i) { p.classList.toggle('active', i === +idx); });
+  document.querySelectorAll('.tab-btn').forEach(function(b, i) { b.classList.toggle('active', i === +idx); });
 }
 
 fetch(FAQ_API)
