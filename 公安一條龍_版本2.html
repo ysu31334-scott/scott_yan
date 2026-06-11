@@ -41,8 +41,8 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--ink)
 @media(min-width:768px){.topnav-right{display:block}}
 
 /* ─── HERO ─── */
-.hero{background:var(--o800);padding:clamp(28px,5vw,52px) max(20px,5vw) clamp(24px,4vw,44px)}
-.hero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:28px}
+.hero{background:var(--o800);padding:clamp(28px,4vw,52px) max(20px,4%) clamp(24px,3vw,44px)}
+.hero-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:28px}
 @media(min-width:768px){.hero-inner{grid-template-columns:1fr 1fr;align-items:center;gap:36px}}
 
 .hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:4px 12px;font-size:11px;font-weight:700;color:rgba(255,255,255,.85);letter-spacing:.3px;margin-bottom:14px}
@@ -71,26 +71,26 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--ink)
 .s-card.free .s-card-num{font-size:clamp(15px,2.5vw,18px);letter-spacing:0}
 
 /* ─── MAIN LAYOUT ─── */
-.page-body{max-width:1100px;margin:0 auto;padding:clamp(24px,4vw,40px) max(20px,5vw) 80px}
+.page-body{max-width:1400px;margin:0 auto;padding:clamp(24px,4vw,40px) max(20px,4%) 80px}
 @media(min-width:900px){
-  .page-body{display:grid;grid-template-columns:1fr 280px;gap:32px;align-items:start}
+  .page-body{display:grid;grid-template-columns:1fr 240px;gap:32px;align-items:start}
 }
 
 /* ─── SECTION HEADER ─── */
-.sec-eye{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--o500);margin-bottom:4px}
-.sec-title{font-size:clamp(18px,3vw,22px);font-weight:900;color:var(--ink);margin-bottom:4px}
-.sec-sub{font-size:13px;color:var(--ink3);line-height:1.65;margin-bottom:16px}
+.sec-eye{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--o500);margin-bottom:4px}
+.sec-title{font-size:clamp(20px,3vw,26px);font-weight:900;color:var(--ink);margin-bottom:4px}
+.sec-sub{font-size:15px;color:var(--ink3);line-height:1.65;margin-bottom:16px}
 .divider{height:1px;background:var(--border);margin:24px 0}
 
 /* ─── STEPS ─── */
 .steps{display:flex;flex-direction:column;gap:0;margin-bottom:0}
 .step{display:flex;gap:14px;position:relative}
-.step:not(:last-child)::before{content:'';position:absolute;left:21px;top:44px;bottom:0;width:1.5px;background:var(--border)}
-.step-num{width:44px;height:44px;flex-shrink:0;border-radius:50%;background:var(--o100);border:2px solid var(--o300);color:var(--o800);font-size:15px;font-weight:900;display:flex;align-items:center;justify-content:center;position:relative;z-index:1}
-.step-body{flex:1;padding-bottom:20px}
-.step-title{font-size:15px;font-weight:800;color:var(--ink);margin-top:9px;margin-bottom:4px}
-.step-desc{font-size:13px;color:var(--ink3);line-height:1.65}
-.step-tag{display:inline-flex;align-items:center;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;margin-top:6px}
+.step:not(:last-child)::before{content:'';position:absolute;left:23px;top:48px;bottom:0;width:1.5px;background:var(--border)}
+.step-num{width:48px;height:48px;flex-shrink:0;border-radius:50%;background:var(--o100);border:2px solid var(--o300);color:var(--o800);font-size:17px;font-weight:900;display:flex;align-items:center;justify-content:center;position:relative;z-index:1}
+.step-body{flex:1;padding-bottom:22px}
+.step-title{font-size:17px;font-weight:800;color:var(--ink);margin-top:10px;margin-bottom:5px}
+.step-desc{font-size:15px;color:var(--ink3);line-height:1.7}
+.step-tag{display:inline-flex;align-items:center;font-size:13px;font-weight:700;padding:4px 12px;border-radius:999px;margin-top:7px}
 .tag-amber{background:var(--o100);color:var(--o800)}
 .tag-teal{background:var(--teal-bg);color:var(--teal)}
 .tag-green{background:var(--gr-bg);color:var(--gr)}
@@ -103,33 +103,33 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--ink)
 .ct-top{display:flex;gap:11px;margin-bottom:0}
 .ct-icon{width:40px;height:40px;border-radius:12px;background:var(--o100);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
 .ct-icon.teal{background:var(--teal-bg)}
-.ct-name{font-size:14px;font-weight:800;color:var(--ink);margin-bottom:3px}
-.ct-scope{font-size:12px;color:var(--ink3);line-height:1.55}
+.ct-name{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:3px}
+.ct-scope{font-size:13px;color:var(--ink3);line-height:1.55}
 .ct-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
-.ct-tag{font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--o100);color:var(--o800)}
+.ct-tag{font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--o100);color:var(--o800)}
 .ct-tag.teal{background:var(--teal-bg);color:var(--teal)}
-.ct-tel{font-size:12px;color:var(--ink3);margin-top:10px;padding-top:10px;border-top:1px solid #EDE5D8}
+.ct-tel{font-size:13px;color:var(--ink3);margin-top:10px;padding-top:10px;border-top:1px solid #EDE5D8}
 .ct-tel span{color:var(--o800);font-weight:700}
-.ct-link-hint{font-size:11px;color:var(--o500);margin-top:8px;display:flex;align-items:center;gap:4px}
+.ct-link-hint{font-size:12px;color:var(--o500);margin-top:8px;display:flex;align-items:center;gap:4px}
 .ct-link-hint::before{content:'→';font-weight:700}
 
 /* ─── ASIDE: DOWNLOADS ─── */
 .aside-card{background:var(--surf);border-radius:var(--r2);border:1.5px solid var(--border);overflow:hidden}
 .aside-head{background:var(--o800);padding:12px 14px;display:flex;align-items:center;gap:8px}
 .aside-head-icon{font-size:18px}
-.aside-head-title{font-size:13px;font-weight:800;color:#fff}
-.aside-head-sub{font-size:10.5px;color:rgba(255,255,255,.6);margin-top:1px}
-.aside-section{font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--o500);padding:12px 14px 4px}
+.aside-head-title{font-size:14px;font-weight:800;color:#fff}
+.aside-head-sub{font-size:11px;color:rgba(255,255,255,.6);margin-top:1px}
+.aside-section{font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--o500);padding:12px 14px 4px}
 .aside-body{padding:0 14px 10px}
-.dl-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #F0EAE0;cursor:pointer;text-decoration:none;transition:background .1s}
+.dl-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #F0EAE0;cursor:pointer;text-decoration:none;transition:background .1s}
 .dl-row:last-child{border-bottom:none;padding-bottom:0}
 .dl-row:hover .dl-txt{color:var(--o700)}
 .dl-dot{width:5px;height:5px;border-radius:50%;background:var(--o300);flex-shrink:0}
-.dl-txt{font-size:12px;color:var(--ink2);flex:1;line-height:1.4;transition:color .1s}
-.dl-badge{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:999px;background:var(--o100);color:var(--o800);flex-shrink:0;white-space:nowrap}
+.dl-txt{font-size:13px;color:var(--ink2);flex:1;line-height:1.4;transition:color .1s}
+.dl-badge{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:999px;background:var(--o100);color:var(--o800);flex-shrink:0;white-space:nowrap}
 .dl-badge.link{background:var(--teal-bg);color:var(--teal)}
 .aside-divider{height:1px;background:var(--border);margin:0 14px}
-.aside-note{background:var(--o50);border-top:1px solid #EDE5D8;padding:10px 14px;font-size:11px;color:var(--ink3);line-height:1.65}
+.aside-note{background:var(--o50);border-top:1px solid #EDE5D8;padding:10px 14px;font-size:12px;color:var(--ink3);line-height:1.65}
 .aside-note strong{color:var(--o800);font-weight:700}
 
 /* ─── NOTICE ─── */
@@ -369,7 +369,7 @@ footer{background:var(--o800);padding:14px max(20px,5vw);display:flex;align-item
             <span class="ct-tag">輔導團</span>
             <span class="ct-tag">危老推動師</span>
           </div>
-          <div class="ct-tel">電話：<span>(02) 2720-8889 分機XXX</span></div>
+          <div class="ct-tel">電話：<span>(02) 2720-8889 分機 2722、2711、2709</span></div>
           <div class="ct-link-hint">前往科室頁面</div>
         </a>
 
@@ -411,7 +411,7 @@ footer{background:var(--o800);padding:14px max(20px,5vw);display:flex;align-item
           <a class="dl-row" href="#"><div class="dl-dot"></div><span class="dl-txt">公安修繕補助申請規格書</span><span class="dl-badge">PDF</span></a>
           <a class="dl-row" href="#"><div class="dl-dot"></div><span class="dl-txt">公安申報作業說明</span><span class="dl-badge">PDF</span></a>
         </div>
-        <div class="aside-note"><strong>本服務不收取任何費用。</strong>每棟建築物限申請一次。如遇任何收費情形，請即通報本處。</div>
+        <div class="aside-note"><strong>本服務不收取任何費用。</strong>如遇任何收費情形，請即通報本處。</div>
       </div>
     </div>
 
@@ -419,7 +419,7 @@ footer{background:var(--o800);padding:14px max(20px,5vw);display:flex;align-item
     <div class="notice fadein fd4">
       <div class="notice-icon">🔒</div>
       <div class="notice-text">
-        <strong>本服務不收取任何費用。</strong>每棟建築物限申請一次。如遇任何收費情形，請即通報本處。疑慮請洽使用科分機 2723 或 8390。
+        <strong>本服務不收取任何費用。</strong>如遇任何收費情形，請即通報本處。疑慮請洽分機 2722 或 8390。
       </div>
     </div>
 
@@ -442,12 +442,14 @@ footer{background:var(--o800);padding:14px max(20px,5vw);display:flex;align-item
         <a class="dl-row" href="#"><div class="dl-dot"></div><span class="dl-txt">管委會成立補助申請須知</span><span class="dl-badge">PDF</span></a>
       </div>
       <div class="aside-divider"></div>
+      <!-- 使用科建議拿掉
       <div class="aside-section">使用科</div>
       <div class="aside-body">
         <a class="dl-row" href="#"><div class="dl-dot"></div><span class="dl-txt">合格公安檢查機構及人員名冊</span><span class="dl-badge link">連結</span></a>
         <a class="dl-row" href="#"><div class="dl-dot"></div><span class="dl-txt">公安修繕補助申請規格書</span><span class="dl-badge">PDF</span></a>
         <a class="dl-row" href="#"><div class="dl-dot"></div><span class="dl-txt">公安申報作業說明</span><span class="dl-badge">PDF</span></a>
       </div>
+      -->
       <div class="aside-note"><strong>本服務不收取任何費用。</strong>每棟建築物限申請一次。如遇收費情形，請即通報本處。</div>
     </div>
   </aside>
@@ -469,7 +471,7 @@ footer{background:var(--o800);padding:14px max(20px,5vw);display:flex;align-item
   <a class="sticky-btn"
      href="https://script.google.com/macros/s/AKfycbwucfo1kocXrxd97vGrAoAaNECpdVVZIPZHCfpl69Ijz8sQihPfDuDs9UeXtyF9cpxuww/exec"
      target="_blank" rel="noopener">
-    ✏️ 填寫社區報名資料
+    ✏️ 填寫報名資料
   </a>
 </div>
 
